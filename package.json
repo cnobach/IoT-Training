@@ -1,0 +1,23 @@
+{
+  "name": "iot-training",
+  "version": "1.0.0",
+  "description": "IoT-Training Project",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cnobach/IoT-Training.git"
+  },
+  "author": "Connor Nobach (2149100)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cnobach/IoT-Training/issues"
+  },
+  "homepage": "https://github.com/cnobach/IoT-Training#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  }
+}
