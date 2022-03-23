@@ -1,0 +1,5 @@
+RUN DB IN CODE:
+    psql -h localhost -p 5438 -d postgres -U postgres --password
+
+RUN DB FROM DOCKER:
+    docker-compose up
