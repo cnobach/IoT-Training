@@ -1,6 +1,12 @@
 // Basic Dependencies
 const dotenv = require('dotenv').config();
 const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const swaggerUI = require('swagger-ui-express');
+
+//  Documents
+const basicInfo = require('./docs/basicInfo');
 
 //  User Route Dependencies
 const getAllUsers = require('./src/routes/users/getAllUsers');
@@ -21,6 +27,12 @@ const app = express();
 
 // Setting to use express.json
 app.use(express.json());
+app.use(express.urlencoded({extended: false}))
+app.use(morgan("dev"));
+app.use(cors());
+
+//  Swagger routes
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(basicInfo));
 
 //  Base Routes
 app.get('/', (req, res) => {
