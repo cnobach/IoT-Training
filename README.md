@@ -1,5 +1,6 @@
 # IoT-Training
   - IoT Training repository
+  - Link to Taiga Kanban Board : https://tree.taiga.io/project/clnobs-iot-training/backlog
 
 ## Feature List
   - Sign up for account
