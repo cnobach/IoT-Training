@@ -1,4 +1,4 @@
-const { getAllUsers } = require('../core/users');
+const { getAllUsers } = require('../../core/users');
 
 /**
  * Calls the getAllUsers function and sends the required response
