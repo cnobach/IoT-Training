@@ -202,7 +202,11 @@ function deleteUser(cb, id) {
 }
 
 
-// Login function
+/**
+ * Function to log the user in
+ * @param {Callback Function} cb 
+ * @param {JSON containing email and pass} data 
+ */
 function login(cb, data){
     const client = new Client(options);
 
