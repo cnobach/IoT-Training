@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Client } = require('pg');
+const bcrypt = require('bcrypt');
 
 /**
  * Database options object. Needed for connection
@@ -93,6 +94,13 @@ function createUser(cb, data) {
         if (err) {
             console.log('error connecting', err.stack);
         } else {
+
+            //  Hashing password
+            saltRounds = bcrypt.genSaltSync(parseInt(process.env.SALT))
+            let pass = bcrypt.hashSync(data.password, saltRounds);
+            data.password = pass;
+
+            console.log(pass)
 
             const query = {
                 name: 'createUser',
@@ -193,6 +201,59 @@ function deleteUser(cb, id) {
     });
 }
 
+
+// Login function
+function login(cb, data){
+    const client = new Client(options);
+
+    client.connect(err => {
+        if (err) {
+            console.log('error connecting', err.stack);
+        } else {
+
+            const query = {
+                name: 'getUser',
+                text: 'SELECT email, password FROM users WHERE email = $1',
+                values: [data.email]
+            }
+
+            client.query(query, (err, res) => {
+
+                if (err) {
+                    throw err;
+                }
+                
+                let user = res.rows[0]; // Sets user to the email/pass combo
+                
+                if(user != null){ // If user's email was found
+                    
+                    //  Compare hashed passwords
+                    let match = bcrypt.compareSync(data.password, user.password);
+
+                    if(match){ //   If they match, login
+                        cb(true);
+                    } else {   //   Else, don't login
+                        cb(false);
+                    }
+
+                } else { // If user's email was not found
+                    
+                    cb(false);
+                }
+
+                client.end(err => {
+                    if (err) {
+                        console.log('client hit error in disconnection', err.stack)
+                    } else {
+                        console.log('client disconnected')
+                    }
+                });
+            });
+        }
+    });
+}
+
+
 /**
  * TODO: Helper function to create DB connection
  */
@@ -229,5 +290,6 @@ module.exports = {
     getUserByID,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    login
 }
