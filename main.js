@@ -14,6 +14,7 @@ const getUserByID = require('./src/routes/users/getById');
 const createUser = require('./src/routes/users/createUser');
 const updateUser = require('./src/routes/users/updateUser');
 const deleteUser = require('./src/routes/users/deleteUser');
+const login = require('./src/routes/users/login')
 
 // Item Route Dependencies
 const getAllItems = require('./src/routes/items/getAllItems');
@@ -45,6 +46,7 @@ app.get('/users/:id', getUserByID);
 app.post('/users', createUser);
 app.put('/users', updateUser);
 app.delete('/users/:id', deleteUser);
+app.post('/login', login)
 
 //  Item routes
 app.get('/items', getAllItems)
