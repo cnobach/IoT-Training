@@ -1,0 +1,54 @@
+<div class="loginForm">
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Email input -->
+        <div class="form-group">
+            <label for="email">Email:</label>
+
+            <input type="text" formControlName="email" id="email" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <div *ngIf="f['email'].errors && f['email'].touched">
+                <div *ngIf="f['email'].errors['required']" style="color: red">
+                    Email is a required input.
+                </div>
+                <div *ngIf="f['email'].errors['email']" style="color: red">
+                    Please enter a valid email.
+                </div>
+            </div>
+        </div>
+
+        <!-- Password input -->
+        <div class="form-group">
+
+            <label for="password">Password:</label>
+
+            <input type="password" formControlName="password" id="password" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <div *ngIf="f['password'].errors && f['password'].touched">
+                <div *ngIf="f['password'].errors['required']" style="color: red">
+                    Password is a required input.
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-control">
+            <!-- If the form is invalid, disable the button -->
+            <div *ngIf="loginForm.invalid; else enabled">
+                <button disabled>Submit</button>
+            </div>
+            <!-- Else show it -->
+            <ng-template #enabled>
+                <div>
+                    <button>Submit</button>
+                </div>
+            </ng-template>
+        </div>
+
+    </form>
+
+</div>

@@ -4,9 +4,9 @@ module.exports = async (req, res) => {
     login(data => {
 
         if(data){
-            res.status(200).send('Logged in')
+            res.status(200).send(true)
         } else {
-            res.status(200).send('Not authorized')
+            res.status(200).send(false)
         }
         
     }, req.body);
