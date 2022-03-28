@@ -100,7 +100,8 @@ function createUser(cb, data) {
             let pass = bcrypt.hashSync(data.password, saltRounds);
             data.password = pass;
 
-            console.log(pass)
+            // To see hash uncomment
+            // console.log(pass) 
 
             const query = {
                 name: 'createUser',
