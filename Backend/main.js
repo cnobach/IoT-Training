@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const bp = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
 
 //  Documents
@@ -30,6 +31,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 app.use(morgan("dev"));
+app.use(bp.json());
 app.use(cors());
 
 //  Swagger routes
