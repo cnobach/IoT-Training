@@ -1,6 +1,6 @@
 # IoT-Training
   - IoT Training repository
-  - Link to Taiga Kanban Board : https://tree.taiga.io/project/clnobs-iot-training/backlog
+  - Link to current Sprint board : https://tree.taiga.io/project/clnobs-iot-training/taskboard/sprint-1-66
 
 ## Feature List
   - Sign up for account
