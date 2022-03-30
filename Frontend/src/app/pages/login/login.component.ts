@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ServerService } from './services/server.service';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -12,9 +13,14 @@ export class LoginComponent implements OnInit {
   submitted = false;
 
   //  Inject form Builder to create LoginForm
-  constructor(private fb: FormBuilder, private server: ServerService) { }
+  constructor(
+    private fb: FormBuilder,
+    private server: ServerService,
+    private primeNgConfig: PrimeNGConfig 
+    ) { }
 
   ngOnInit(): void {
+    this.primeNgConfig.ripple = true;
   }
 
   //  Begin creation of the login form

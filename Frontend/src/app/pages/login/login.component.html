@@ -3,52 +3,57 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <!-- Email input -->
         <div class="form-group">
-            <label for="email">Email:</label>
-
-            <input type="text" formControlName="email" id="email" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
-
+            <span class="p-float-label">
+                <input type="text" formControlName="email" id="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" pInputText>
+                <label for="email">Email</label>
+            </span>
             <!-- Form validation, just checks if it's been touched & for any errors -->
-            <div *ngIf="f['email'].errors && f['email'].touched">
-                <div *ngIf="f['email'].errors['required']" style="color: red">
-                    Email is a required input.
-                </div>
-                <div *ngIf="f['email'].errors['email']" style="color: red">
-                    Please enter a valid email.
-                </div>
-            </div>
+            <span *ngIf="f['email'].errors && f['email'].touched">
+                <span *ngIf="f['email'].errors['required']" style="color: red">
+                    <p-message severity="error" text="Email is required."></p-message>
+                </span>
+                <span *ngIf="f['email'].errors['email']" style="color: red">
+                    <p-message severity="error" text="Enter a valid email."></p-message>
+                </span>
+            </span>
         </div>
 
         <!-- Password input -->
         <div class="form-group">
-
-            <label for="password">Password:</label>
-
-            <input type="password" formControlName="password" id="password" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+            <span class="p-float-label">
+                <input type="password" formControlName="password" id="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" pInputText>
+                <label for="password">Password</label>
+            </span>
 
             <!-- Form validation, just checks if it's been touched & for any errors -->
-            <div *ngIf="f['password'].errors && f['password'].touched">
-                <div *ngIf="f['password'].errors['required']" style="color: red">
-                    Password is a required input.
-                </div>
-            </div>
+            <span *ngIf="f['password'].errors && f['password'].touched">
+                <span *ngIf="f['password'].errors['required']" style="color: red">
+                    <p-message severity="error" text="Password is required."></p-message>
+                </span>
+            </span>
 
         </div>
 
         <div class="form-control">
             <!-- If the form is invalid, disable the button -->
             <div *ngIf="loginForm.invalid; else enabled">
-                <button disabled>Submit</button>
+
+                <!-- PrimeNG Button -->
+                <button pButton disabled pRipple type="button" label="Submit" class="p-button-raised"></button>
+                <button (click)="onReset()" pButton pRipple type="button" label="Reset"
+                    class="p-button-raised p-button-danger"></button>
+
             </div>
             <!-- Else show it -->
             <ng-template #enabled>
-                <button>Submit</button>
+                <button (click)="onSubmit()" pButton pRipple type="button" label="Submit"
+                    class="p-button-raised"></button>
+                <button (click)="onReset()" pButton pRipple type="button" label="Reset"
+                    class="p-button-raised p-button-danger"></button>
             </ng-template>
         </div>
     </form>
-
-    <!-- Button to reset the form -->
-    <button (click)="onReset()">Reset</button>
 
 </div>

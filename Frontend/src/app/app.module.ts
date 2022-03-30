@@ -8,6 +8,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 
+// PrimeNg imports
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 
 @NgModule({
@@ -20,7 +25,11 @@ import { LoginComponent } from './pages/login/login.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ButtonModule,
+    RippleModule,
+    MessagesModule,
+    MessageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
