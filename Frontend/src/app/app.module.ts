@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 // PrimeNg imports
 import { ButtonModule } from 'primeng/button';
@@ -15,10 +16,12 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

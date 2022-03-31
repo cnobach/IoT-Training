@@ -1,0 +1,160 @@
+<div class="registerForm">
+    <h1>Register</h1>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <!-- Name Input -->
+        <div class="form-group">
+            <span class="p-float-label">
+                <input type="text" formControlName="name" id="name" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['name'].errors }" pInputText>
+                <label for="name">Name</label>
+            </span>
+            <!-- Form validation -->
+            <span *ngIf="f['name'].errors && f['name'].touched">
+                <span *ngIf="f['name'].errors['required']" style="color: red">
+                    <p-message severity="error" text="Name is required."></p-message>
+                </span>
+            </span>
+        </div>
+
+        <!-- Email input -->
+        <div class="form-group">
+            <span class="p-float-label">
+                <input type="text" formControlName="email" id="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" pInputText>
+                <label for="email">Email</label>
+            </span>
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <span *ngIf="f['email'].errors && f['email'].touched">
+                <span *ngIf="f['email'].errors['required']" style="color: red">
+                    <p-message severity="error" text="Email is required."></p-message>
+                </span>
+                <span *ngIf="f['email'].errors['email']" style="color: red">
+                    <p-message severity="error" text="Enter a valid email."></p-message>
+                </span>
+            </span>
+        </div>
+
+        <!-- Password input -->
+        <div class="form-group">
+            <span class="p-float-label">
+                <input type="password" formControlName="password" id="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" pInputText>
+                <label for="password">Password</label>
+            </span>
+
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <span *ngIf="f['password'].errors && f['password'].touched">
+                <span *ngIf="f['password'].errors['required']" style="color: red">
+                    <p-message severity="error" text="Password is required."></p-message>
+                </span>
+            </span>
+        </div>
+
+        <!-- Confirm Password input -->
+        <div class="form-group">
+            <span class="p-float-label">
+                <input type="password" formControlName="confPass" id="confPass" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['confPass'].errors }" pInputText>
+                <label for="confPass">Confirm Password</label>
+            </span>
+
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <span *ngIf="f['confPass'].errors && f['confPass'].touched">
+                <span *ngIf="f['confPass'].errors['required']" style="color: red">
+                    <p-message severity="error" text="Password is required."></p-message>
+                </span>
+                <span *ngIf="registerForm.errors?.['confirmError']" style="color: red">
+                    <p-message severity="error" text="Passwords do not match."></p-message>
+                </span>
+            </span>
+
+        </div>
+
+        <!-- Address input -->
+        <div class="form-group">
+            <span class="p-float-label">
+                <input type="text" formControlName="address" id="address" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" pInputText>
+                <label for="address">Shipping Address</label>
+            </span>
+
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <span *ngIf="f['address'].errors && f['address'].touched">
+                <span *ngIf="f['address'].errors['required']" style="color: red">
+                    <p-message severity="error" text="Address is required."></p-message>
+                </span>
+            </span>
+        </div>
+
+        <!-- City input -->
+        <div class="form-group">
+            <span class="p-float-label">
+                <input type="text" formControlName="city" id="city" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['city'].errors }" pInputText>
+                <label for="city">City</label>
+            </span>
+
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <span *ngIf="f['city'].errors && f['city'].touched">
+                <span *ngIf="f['city'].errors['required']" style="color: red">
+                    <p-message severity="error" text="City is required."></p-message>
+                </span>
+            </span>
+        </div>
+
+        <!-- State input -->
+        <div class="form-group">
+            <span class="p-float-label">
+                <input type="text" formControlName="state" id="state" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['state'].errors }" pInputText>
+                <label for="state">State</label>
+            </span>
+
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <span *ngIf="f['state'].errors && f['state'].touched">
+                <span *ngIf="f['state'].errors['required']" style="color: red">
+                    <p-message severity="error" text="State is required."></p-message>
+                </span>
+            </span>
+        </div>
+
+        <!-- Zip input -->
+        <div class="form-group">
+            <span class="p-float-label">
+                <input minlength="5" maxlength="5" type="text" formControlName="zip" id="zip" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['zip'].errors }" pInputText>
+                <label for="zip">Zip</label>
+            </span>
+
+            <!-- Form validation, just checks if it's been touched & for any errors -->
+            <span *ngIf="f['zip'].errors && f['zip'].touched">
+                <span *ngIf="f['zip'].errors['required']" style="color: red">
+                    <p-message severity="error" text="Zip is required."></p-message>
+                </span>
+                <span *ngIf="f['zip'].errors['minLengh'] || f['zip'].errors['maxLengh']" style="color: red">
+                    <p-message severity="error" text="Zip must be 5 digits"></p-message>
+                </span>
+            </span>
+        </div>
+
+        <div class="form-control">
+            <!-- If the form is invalid, disable the button -->
+            <div *ngIf="registerForm.invalid; else enabled">
+
+                <!-- PrimeNG Button -->
+                <button pButton disabled pRipple type="button" label="Register" class="p-button-raised"></button>
+                <button (click)="onReset()" pButton pRipple type="button" label="Reset"
+                    class="p-button-raised p-button-danger"></button>
+
+            </div>
+            <!-- Else show it -->
+            <ng-template #enabled>
+                <button (click)="register()" pButton pRipple type="button" label="Register"
+                    class="p-button-raised"></button>
+                <button (click)="onReset()" pButton pRipple type="button" label="Reset"
+                    class="p-button-raised p-button-danger"></button>
+            </ng-template>
+        </div>
+
+    </form>
+</div>
