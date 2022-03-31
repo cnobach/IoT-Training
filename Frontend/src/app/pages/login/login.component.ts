@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ServerService } from './services/server.service';
 import { PrimeNGConfig } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private server: ServerService,
-    private primeNgConfig: PrimeNGConfig 
+    private primeNgConfig: PrimeNGConfig,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
@@ -41,9 +43,10 @@ export class LoginComponent implements OnInit {
     } else {
 
       this.server.login(this.loginForm.value).subscribe(query => {
-        if(query){
-          alert('user logged in');
-        } else {
+        if(query){ // If success - set userID in localstorage and route to home
+          localStorage.setItem('userId', query.userId);
+          this.router.navigate(['dashboard']);
+        } else { // Else alert that it was incorrect
           alert('Incorrect Username/Password')
         }
       })

@@ -15,6 +15,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 
 
@@ -22,7 +23,8 @@ import { MessageModule } from 'primeng/message';
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

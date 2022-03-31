@@ -218,7 +218,7 @@ function login(cb, data){
 
             const query = {
                 name: 'getUser',
-                text: 'SELECT email, password FROM users WHERE email = $1',
+                text: 'SELECT email, password, id FROM users WHERE email = $1',
                 values: [data.email]
             }
 
@@ -236,7 +236,8 @@ function login(cb, data){
                     let match = bcrypt.compareSync(data.password, user.password);
 
                     if(match){ //   If they match, login
-                        cb(true);
+                        console.log('\n\nID in users.js ' + user.id)
+                        cb(user.id);
                     } else {   //   Else, don't login
                         cb(false);
                     }
