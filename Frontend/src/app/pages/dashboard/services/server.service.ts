@@ -16,4 +16,8 @@ export class ServerService {
   getUser(id: any): Observable<any>{
     return this.http.get(`${this.backend_url}:${this.backend_port}/users/` + id);
   }
+
+  getItems(): Observable<any>{
+    return this.http.get(`${this.backend_url}:${this.backend_port}/items`)
+  }
 }

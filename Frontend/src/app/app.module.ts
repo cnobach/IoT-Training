@@ -17,6 +17,11 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { DataViewModule } from 'primeng/dataview';
+import { PanelModule } from 'primeng/panel';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 
@@ -38,7 +43,12 @@ import { MessageModule } from 'primeng/message';
     RippleModule,
     MessagesModule,
     MessageModule,
-    RouterModule
+    RouterModule,
+    DataViewModule,
+    PanelModule,
+    DropdownModule,
+    DialogModule,
+    InputTextModule
   ],
   providers: [],
   bootstrap: [AppComponent]
