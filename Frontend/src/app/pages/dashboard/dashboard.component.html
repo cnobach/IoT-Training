@@ -1,10 +1,14 @@
 <app-navbar></app-navbar>
-<h1>Welcome, {{user.name}}.</h1>
+<span *ngIf="user">
+    <h1>Welcome, {{user.name}}.</h1>
+</span>
+
 
 <!-- Set up of dataview -->
 <div *ngIf="display">
     <div class="card">
-        <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
+        
+        <p-dataView #dv [formControl]="products" [value]="products.value" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
             [sortOrder]="sortOrder" layout="grid">
 
             <ng-template pTemplate="header">

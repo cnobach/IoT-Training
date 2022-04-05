@@ -4,8 +4,10 @@ import { ServerService } from './services/server.service';
 
 import { PrimeNGConfig } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
+
 import { DataViewModule } from 'primeng/dataview';
 import { DropdownModule } from 'primeng/dropdown';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,8 +16,9 @@ import { DropdownModule } from 'primeng/dropdown';
 })
 export class DashboardComponent implements OnInit {
 
+  products = new FormControl([]);
+
   user: any;
-  products: any;
   sortOptions: SelectItem[] = [];
   sortOrder: number = 0;
   sortField: string = '';
@@ -36,12 +39,13 @@ export class DashboardComponent implements OnInit {
     //  set user object to the got user
     this.server.getUser(localStorage.getItem('userId')).subscribe(data => {
       this.user = data.message[0];
-      console.log(this.user);
     })
+
     this.server.getItems().subscribe(data => {
-      this.products = data.message[0];
+      console.log('data recieved: ', data.message);
+      this.products = data.message;
       this.display = true;
-      console.log(this.products);
+      console.log("items recieved: ", this.products);
     })
 
     // Setting up primeNG DataView variables & config
