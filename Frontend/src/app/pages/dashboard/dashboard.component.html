@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <span *ngIf="user">
-    <h1>Welcome, {{user.name}}.</h1>
+    <h1 class="text-center p-4">Welcome, {{user.name}}.</h1>
 </span>
 
 
@@ -9,7 +9,7 @@
     <div class="card">
         
         <!-- [formControl]="products" -->
-        <p-dataView #dv  [value]="products" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
+        <p-dataView #dv  [value]="products" [paginator]="true" [rows]="5" filterBy="name" [sortField]="sortField"
             [sortOrder]="sortOrder" layout="grid">
 
             <ng-template pTemplate="header">
@@ -34,7 +34,7 @@
                         <!-- Listing product name and description -->
                         <div class="product-list-detail">
 
-                            <div class="product-name">
+                            <div class="product-name fs-4 fw-bold">
                                 {{product.name}}
                             </div>
 
@@ -45,7 +45,7 @@
                         <!-- Listing product price and Inventory -->
                         <div class="product-list-action">
                             <span class="product-price">
-                                {{product.price}}
+                                ${{product.price}}
                             </span>
                             <p-button icon="pi pi-shopping-cart" label="Add to Cart">
                             </p-button>
@@ -53,6 +53,7 @@
                     </div>
                 </div>
             </ng-template>
+            
             <!-- Need to work on looks here - its ugly rn -->
             <ng-template let-product pTemplate="gridItem">
                 <div class="p-col-12 p-md-4">
@@ -60,11 +61,11 @@
                         <div class="product-grid-item-top">
                             <div>
                                 <i class="pi pi-tag product-category-icon"></i>
-                                <span class="product-id">{{product.id}}</span>
+                                <span class="product-id p-2">{{product.id}}</span>
                             </div>
                         </div>
                         <div class="product-grid-item-content">
-                            <div class="product-name">{{product.name}}</div>
+                            <div class="product-name fs-4 fw-bold">{{product.name}}</div>
                             <div class="product-description">{{product.description}}</div>
                         </div>
                         <div class="product-grid-item-bottom">
