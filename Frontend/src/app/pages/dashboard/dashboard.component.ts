@@ -39,9 +39,7 @@ export class DashboardComponent implements OnInit {
     })
 
     this.server.getItems().subscribe(data => {
-      console.log('data recieved: ', data);
       this.products = data;
-      console.log("items recieved: ", this.products);
     })
 
     // Setting up primeNG DataView variables & config
@@ -62,32 +60,29 @@ export class DashboardComponent implements OnInit {
     }
   }
   
-  
+  // Sort products array by price ascending
   sortProductsAsc(i:any, j:any){
     const a = parseInt(i.price);
     const b = parseInt(j.price);
-
     let comp = 0;
     if(a > b){
       comp = 1;
     } else if(a < b){
       comp = -1;
     }
-
     return comp;
   }
 
+  // Sort products array by price descending
   sortProductsDesc(i:any, j:any){
     const a = parseInt(i.price);
     const b = parseInt(j.price);
-
     let comp = 0;
     if(a > b){
       comp = -1;
     } else if(a < b){
       comp = 1;
     }
-
     return comp;
   }
 

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client } = require('pg');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 /**
  * Database options object. Needed for connection
@@ -236,8 +237,21 @@ function login(cb, data){
                     let match = bcrypt.compareSync(data.password, user.password);
 
                     if(match){ //   If they match, login
-                        console.log('\n\nID in users.js ' + user.id)
-                        cb(user.id);
+
+
+                        // Sign the JWT
+                        const key = process.env.JWT_KEY;
+
+                        const token = jwt.sign({}, key, {
+                            expiresIn: '5 minutes'
+                        })
+
+                        let ret = {
+                            userId: user.id,
+                            token: token
+                        }
+
+                        cb(ret);
                     } else {   //   Else, don't login
                         cb(false);
                     }

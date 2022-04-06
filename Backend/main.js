@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const bp = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
+const cookieParser = require('cookie-parser');
 
 //  Documents
 const basicInfo = require('./docs/basicInfo');
@@ -27,12 +28,19 @@ const deleteItem = require('./src/routes/items/deleteItem')
 // Setting app (express)
 const app = express();
 
+app.use(function(req, res, next){
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+})
+
 // Setting to use express.json
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 app.use(morgan("dev"));
 app.use(bp.json());
 app.use(cors());
+app.use(cookieParser());
 
 //  Swagger routes
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(basicInfo));
