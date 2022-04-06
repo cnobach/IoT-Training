@@ -5,8 +5,6 @@ import { ServerService } from './services/server.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 
-import { DataViewModule } from 'primeng/dataview';
-import { DropdownModule } from 'primeng/dropdown';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -16,13 +14,12 @@ import { FormControl } from '@angular/forms';
 })
 export class DashboardComponent implements OnInit {
 
-  products = new FormControl([]);
+  products = [{}];
 
   user: any;
   sortOptions: SelectItem[] = [];
   sortOrder: number = 0;
   sortField: string = '';
-  display = false;
 
   constructor(
     private router: Router,
@@ -44,7 +41,6 @@ export class DashboardComponent implements OnInit {
     this.server.getItems().subscribe(data => {
       console.log('data recieved: ', data.message);
       this.products = data.message;
-      this.display = true;
       console.log("items recieved: ", this.products);
     })
 
@@ -59,7 +55,6 @@ export class DashboardComponent implements OnInit {
   //  when sort option is changed
   onSortChange(event:any) {
     let value = event.value;
-
     if(value.indexOf('!') === 0){
       this.sortOrder = -1;
       this.sortField = value.substring(1, value.length)

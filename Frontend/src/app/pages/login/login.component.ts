@@ -35,9 +35,7 @@ export class LoginComponent implements OnInit {
   //      For now just logs data, want to see what it looks like
   onSubmit() {
     this.submitted = true;
-
-    console.log(JSON.stringify(this.loginForm.value));
-
+    
     if(this.loginForm.invalid){
       return;
     } else {

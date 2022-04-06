@@ -5,10 +5,11 @@
 
 
 <!-- Set up of dataview -->
-<div *ngIf="display">
+<div *ngIf="products">
     <div class="card">
         
-        <p-dataView #dv [formControl]="products" [value]="products.value" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
+        <!-- [formControl]="products" -->
+        <p-dataView #dv  [value]="products" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
             [sortOrder]="sortOrder" layout="grid">
 
             <ng-template pTemplate="header">
@@ -26,6 +27,7 @@
                 </div>
             </ng-template>
 
+            <!-- This gives weird errors, gotta fix this -->
             <ng-template let-product pTemplate="listItem">
                 <div class="p-col-12">
                     <div class="product-list-item">
@@ -33,7 +35,7 @@
                         <div class="product-list-detail">
 
                             <div class="product-name">
-                                {{product.name}}
+                                {{product.value.name}}
                             </div>
 
                             <div class="product-description">
@@ -51,6 +53,7 @@
                     </div>
                 </div>
             </ng-template>
+            <!-- Need to work on looks here - its ugly rn -->
             <ng-template let-product pTemplate="gridItem">
                 <div class="p-col-12 p-md-4">
                     <div class="product-grid-item card">
