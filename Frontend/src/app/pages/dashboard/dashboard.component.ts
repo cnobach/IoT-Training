@@ -39,8 +39,8 @@ export class DashboardComponent implements OnInit {
     })
 
     this.server.getItems().subscribe(data => {
-      console.log('data recieved: ', data.message);
-      this.products = data.message;
+      console.log('data recieved: ', data);
+      this.products = data;
       console.log("items recieved: ", this.products);
     })
 
@@ -55,15 +55,41 @@ export class DashboardComponent implements OnInit {
   //  when sort option is changed
   onSortChange(event:any) {
     let value = event.value;
-    if(value.indexOf('!') === 0){
-      this.sortOrder = -1;
-      this.sortField = value.substring(1, value.length)
-    } else {
-      this.sortOrder = 1;
-      this.sortField = value;
+    if(value === '!price'){ //If high to low selected
+      this.products.sort(this.sortProductsDesc);
+    } else if(value === 'price') { //If low to high selected
+      this.products.sort(this.sortProductsAsc);
     }
   }
+  
+  
+  sortProductsAsc(i:any, j:any){
+    const a = parseInt(i.price);
+    const b = parseInt(j.price);
 
+    let comp = 0;
+    if(a > b){
+      comp = 1;
+    } else if(a < b){
+      comp = -1;
+    }
+
+    return comp;
+  }
+
+  sortProductsDesc(i:any, j:any){
+    const a = parseInt(i.price);
+    const b = parseInt(j.price);
+
+    let comp = 0;
+    if(a > b){
+      comp = -1;
+    } else if(a < b){
+      comp = 1;
+    }
+
+    return comp;
+  }
 
 
 }
