@@ -14,6 +14,6 @@ export class ServerService {
   backend_port = environment.backendPort;
 
   login(user : any): Observable<any>{
-    return this.http.post(`${this.backend_url}:${this.backend_port}/login`, user);
+    return this.http.post(`${this.backend_url}:${this.backend_port}/login`, user, {withCredentials: true});
   }
 }

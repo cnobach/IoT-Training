@@ -28,6 +28,12 @@ const deleteItem = require('./src/routes/items/deleteItem')
 // Setting app (express)
 const app = express();
 
+var corsOptions = {
+    origin: `http://localhost:4200`,
+    credentials: true
+}
+
+
 app.use(function(req, res, next){
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
@@ -39,7 +45,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 app.use(morgan("dev"));
 app.use(bp.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 //  Swagger routes
