@@ -25,6 +25,12 @@ const createItem = require('./src/routes/items/createItem')
 const updateItem = require('./src/routes/items/updateItem')
 const deleteItem = require('./src/routes/items/deleteItem')
 
+// Cart Route Dependencies
+const getUserCart = require('./src/routes/cart/getUserCart');
+const removeItem = require('./src/routes/cart/removeItem');
+const clearCart = require('./src/routes/cart/clearCart');
+const addItem = require('./src/routes/cart/addItem');
+
 // Setting app (express)
 const app = express();
 
@@ -70,6 +76,12 @@ app.get('/items/:id', getItemById)
 app.post('/items', createItem)
 app.put('/items', updateItem)
 app.delete('/items/:id', deleteItem)
+
+// Cart routes
+app.get('/cart', getUserCart);
+app.put('/cart/add', addItem);
+app.put('/cart/remove', removeItem);
+app.delete('/cart', clearCart);
 
 // Listening on the .env defined port, and display 
 app.listen(dotenv.parsed.PORT, () => {

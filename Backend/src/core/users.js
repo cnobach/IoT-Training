@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Client } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { createCart } = require('./cart');
 
 /**
  * Database options object. Needed for connection
@@ -101,9 +102,6 @@ function createUser(cb, data) {
             let pass = bcrypt.hashSync(data.password, saltRounds);
             data.password = pass;
 
-            // To see hash uncomment
-            // console.log(pass) 
-
             const query = {
                 name: 'createUser',
                 text: 'INSERT INTO users(name, password, email, address, city, state, zip) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
@@ -115,7 +113,12 @@ function createUser(cb, data) {
                 if (err) {
                     throw err;
                 }
-                cb(res.rows);
+
+                createCart(data => {
+                    cb(res.rows);
+                }, res.rows[0].id);
+
+                
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)

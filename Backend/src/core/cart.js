@@ -46,7 +46,7 @@ function getUserCart(cb, id) {
 }
 
 //  Helper function to get a cart by the given cart ID
-function getCartByCartId(cartId) {
+function getCartByCartId(cartId, cb) {
 
     const client = new Client(options);
 
@@ -65,6 +65,7 @@ function getCartByCartId(cartId) {
                 if (err) {
                     throw err;
                 } else {
+                    cb(res.rows[0]);
                     client.end(err => {
                         if (err) {
                             console.log('client hit error in disconnection', err.stack)
@@ -72,7 +73,6 @@ function getCartByCartId(cartId) {
                             console.log('client disconnected')
                         }
                     });
-                    return res.rows;
                 }
             })
 
@@ -81,7 +81,7 @@ function getCartByCartId(cartId) {
 }
 
 // Helper function to update the given cart
-function updateCart(cartId, cart) {
+function updateCart(cartId, cart, cb) {
     const client = new Client(options);
 
     client.connect(err => {
@@ -100,6 +100,8 @@ function updateCart(cartId, cart) {
                     throw err;
                 } else {
 
+                    cb(res.rows[0]);
+
                     client.end(err => {
                         if (err) {
                             console.log('client hit error in disconnection', err.stack)
@@ -107,60 +109,107 @@ function updateCart(cartId, cart) {
                             console.log('client disconnected')
                         }
                     });
-
-                    return res.rows;
                 }
             })
-
         }
     })
-
-
 }
 
 // Function to remove the first instance of an item in the given cart
 function removeItem(cb, cartId, itemId) {
 
     // Waits for the helper to get the cart by id
-    const cart = await this.getCartByCartId(cartId);
+    getCartByCartId(cartId, cart => {
+        cart = cart.items;
 
-    // Finds the index of the first instance of the item
-    let index = cart.indexOf(itemId);
+        // Finds the index of the first instance of the item
+        let index = cart.indexOf(itemId);
 
-    console.log('old cart: ', cart);
-    console.log('found index: ', index);
+        console.log('old cart: ', cart);
+        console.log('found index: ', index);
 
-    //  If the index was found, removes the item
-    if(index > -1){
-        cart.splice(index, 1);
-    }
+        //  If the index was found, removes the item
+        if(index > -1){
+            cart.splice(index, 1);
+        }
 
-    // Waits for the update cart function to run
-    let newCart =  await this.updateCart(cartId, cart);
+        // Waits for the update cart function to run
+        updateCart(cartId, cart, newCart => {
+            console.log('new cart: ', newCart.items);
+            // Returns the new cart (and id)
+            cb(newCart);
+        });
 
-    console.log('new cart: ', newCart.items);
-
-    // Returns the new cart (and id)
-    cb(newCart);
+    });
 }
 
 // Function to add a new item to the cart
-function addItem(sb, cartId, itemId){
+function addItem(cb, cartId, itemId){
 
     // Waits for the helper to get the cart by id
-    const cart = await this.getCartByCartId(cartId);
+    getCartByCartId(cartId, cart => {
+        cart = cart.items;
+        console.log('old cart: ', cart);
 
-    console.log('old cart: ', cart);
+        // Adds new item to the array
+        cart.push(itemId);
+    
+        // Waits for the update cart function to run
+        let newCart = updateCart(cartId, cart, newCart => {     
+            console.log('new cart: ', newCart);
+            // Returns the new cart (and ids)
+            cb(newCart);
+        });
 
-    // Adds new item to the array
-    cart.push(itemId);
+    });
+}
 
-    // Waits for the update cart function to run
-    let newCart = await this.updateCart(cartId, cart);
+// Function to clear the users cart
+function clearCart(cb, cartId){
+    const empty = [];
+    updateCart(cartId, empty, newCart => {
+        console.log('new cart: ', newCart);
+        cb(newCart);
+    });
+}
 
-    console.log('new cart: ', newCart.items);
+// Function to create a cart for a user. called whenever a user is created
+function createCart(cb, userId){
+    const client = new Client(options);
 
-    // Returns the new cart (and id)
-    cb(newCart);
+    client.connect(err => {
+        if (err) {
+            console.log('error connecting', err.stack);
+        } else {
 
+            const query = {
+                name: 'createCart',
+                text: `INSERT INTO cart(userId, items) VALUES ($1, '{}')`,
+                values: [userId]
+            }
+
+            client.query(query, (err, res) => {
+
+                if (err) {
+                    throw err;
+                }
+                cb(res.rows);
+                client.end(err => {
+                    if (err) {
+                        console.log('client hit error in disconnection', err.stack)
+                    } else {
+                        console.log('client disconnected')
+                    }
+                });
+            });
+        }
+    });
+}
+
+module.exports = {
+    getUserCart,
+    addItem,
+    removeItem,
+    clearCart,
+    createCart
 }
