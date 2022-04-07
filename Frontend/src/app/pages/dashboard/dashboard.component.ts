@@ -5,8 +5,6 @@ import { ServerService } from './services/server.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 
-import { FormControl } from '@angular/forms';
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',

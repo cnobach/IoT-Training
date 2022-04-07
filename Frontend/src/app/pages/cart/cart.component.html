@@ -1,1 +1,41 @@
 <app-navbar></app-navbar>
+<h1 class="text-center p-4">Cart</h1>
+
+<p-table [value]="cart">
+
+    <!-- Header of the table -->
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            Your Cart
+            <p-button icon="pi pi-refresh"></p-button>
+        </div>
+    </ng-template>
+
+    <!-- Headers for the rows -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Options</th>
+        </tr>
+    </ng-template>
+
+    <!-- Template for the entire table -->
+    <ng-template pTemplate="body" let-item>
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.price | currency:'USD'}}</td>
+            <td> <p-button icon="pi pi-times"></p-button> </td>
+        </tr>
+    </ng-template>
+
+    <!-- Total cost section -->
+    <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            Total Price: {{totalCost | currency:'USD'}}
+        </div>
+    </ng-template>
+</p-table>
+

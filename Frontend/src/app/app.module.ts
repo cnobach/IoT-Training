@@ -11,6 +11,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NavbarComponent } from './pages/dashboard/navbar/navbar.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 // PrimeNg imports
 import { ButtonModule } from 'primeng/button';
@@ -22,7 +23,8 @@ import { PanelModule } from 'primeng/panel';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { CartComponent } from './pages/cart/cart.component';
+import { TableModule } from 'primeng/table';
+
 
 
 
@@ -50,7 +52,8 @@ import { CartComponent } from './pages/cart/cart.component';
     PanelModule,
     DropdownModule,
     DialogModule,
-    InputTextModule
+    InputTextModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

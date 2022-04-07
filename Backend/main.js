@@ -78,7 +78,7 @@ app.put('/items', updateItem)
 app.delete('/items/:id', deleteItem)
 
 // Cart routes
-app.get('/cart', getUserCart);
+app.get('/cart/:id', getUserCart);
 app.put('/cart/add', addItem);
 app.put('/cart/remove', removeItem);
 app.delete('/cart', clearCart);
