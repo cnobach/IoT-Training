@@ -55,6 +55,8 @@ function getCartByCartId(cartId, cb) {
             console.log('error connecting', err.stack)
         } else {
 
+            console.log('cart id: ', cartId);
+            
             const query = {
                 name: 'getCart',
                 text: 'SELECT items FROM cart WHERE cartId = $1',
@@ -65,6 +67,7 @@ function getCartByCartId(cartId, cb) {
                 if (err) {
                     throw err;
                 } else {
+                    console.log('look here', res.rows);
                     cb(res.rows[0]);
                     client.end(err => {
                         if (err) {
@@ -144,24 +147,45 @@ function removeItem(cb, cartId, itemId) {
 }
 
 // Function to add a new item to the cart
-function addItem(cb, cartId, itemId){
+function addItem(cb, userId, itemId){
 
-    // Waits for the helper to get the cart by id
-    getCartByCartId(cartId, cart => {
-        cart = cart.items;
+    getUserCart(cart => {
+
+        console.log('cart inside getUserCart in add', cart[0])
+        let cartId = cart[0].cartid;
+        console.log('cartid', cartId)
+        cart = cart[0].items;
         console.log('old cart: ', cart);
 
         // Adds new item to the array
         cart.push(itemId);
     
         // Waits for the update cart function to run
-        let newCart = updateCart(cartId, cart, newCart => {     
+        updateCart(cartId, cart, newCart => {     
             console.log('new cart: ', newCart);
             // Returns the new cart (and ids)
             cb(newCart);
         });
 
-    });
+    }, userId)
+
+    // // Waits for the helper to get the cart by id
+    // getCartByCartId(cartId, cart => {
+    //     console.log(cart)
+    //     cart = cart.items;
+    //     console.log('old cart: ', cart);
+
+    //     // Adds new item to the array
+    //     cart.push(itemId);
+    
+    //     // Waits for the update cart function to run
+    //     let newCart = updateCart(cartId, cart, newCart => {     
+    //         console.log('new cart: ', newCart);
+    //         // Returns the new cart (and ids)
+    //         cb(newCart);
+    //     });
+
+    // });
 }
 
 // Function to clear the users cart

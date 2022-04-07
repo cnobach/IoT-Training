@@ -3,7 +3,7 @@
     <h1 class="text-center p-4">Welcome, {{user.name}}.</h1>
 </span>
 
-
+<p-messages [value]="msgs"></p-messages>
 <!-- Set up of dataview -->
 <div *ngIf="products">
     <div class="card">
@@ -47,7 +47,8 @@
                             <span class="product-price">
                                 ${{product.price}}
                             </span>
-                            <p-button icon="pi pi-shopping-cart" label="Add to Cart">
+                            <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [key]="product.id"></p-confirmDialog>
+                            <p-button icon="pi pi-shopping-cart" label="Add to Cart" (click)="confirmAdd(product.id)">
                             </p-button>
                         </div>
                     </div>
@@ -70,7 +71,8 @@
                         </div>
                         <div class="product-grid-item-bottom">
                             <span class="product-price">${{product.price}}</span>
-                            <p-button icon="pi pi-shopping-cart"></p-button>
+                            <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [key]="product.id"></p-confirmDialog>
+                            <p-button icon="pi pi-shopping-cart" (click)="confirmAdd(product.id)"></p-button>
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,9 @@
     width: 14rem;
     font-weight: normal;
   }
+  :host ::ng-deep button {
+    margin-right: .25em;
+  }
   :host ::ng-deep .product-name {
     font-size: 1.5rem;
     font-weight: 700;

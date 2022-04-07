@@ -4,6 +4,8 @@ import { ServerService } from './services/server.service';
 
 import { PrimeNGConfig } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
+import { Message } from 'primeng/api';;
 
 @Component({
   selector: 'app-dashboard',
@@ -19,15 +21,19 @@ export class DashboardComponent implements OnInit {
   sortOrder: number = 0;
   sortField: string = '';
 
+  msgs: Message[] = [];
+
   constructor(
     private router: Router,
     private server: ServerService,
-    private primeNg: PrimeNGConfig
+    private primeNg: PrimeNGConfig,
+    private confirmServ: ConfirmationService
     ) { }
 
   //  If the user is not logged in, route to login page
   //    ** probably gonna change with JWT's, for now it works
   ngOnInit(): void {
+
     if (!localStorage.getItem('userId')) {
       this.router.navigate(['login']);
     }
@@ -84,5 +90,26 @@ export class DashboardComponent implements OnInit {
     return comp;
   }
 
+  addToCart(itemId: any, cb:any ){
+    this.server.addToCart(itemId, localStorage.getItem('userId')).subscribe(data=> {
+      cb(true);
+    });
+  }
 
+  confirmAdd(itemId: any){
+    this.confirmServ.confirm({
+      message: 'Add this item to your cart?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.addToCart(itemId, () => {
+          this.msgs = [{severity:'info', summary:'Confirmed', detail:'Item added!'}]
+        })
+      },
+      reject: () => {
+        this.msgs = [{severity: 'info', summary: 'Declined', detail:'Item was not added.'}]
+      },
+      key: itemId
+    })
+  }
 }

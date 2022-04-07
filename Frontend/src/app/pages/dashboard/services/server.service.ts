@@ -20,4 +20,14 @@ export class ServerService {
   getItems(): Observable<any>{
     return this.http.get(`${this.backend_url}:${this.backend_port}/items`)
   }
+
+  addToCart(itemId: any, userId: any){
+    let body = {
+      itemId: itemId,
+      userId: parseInt(userId)
+    }
+
+    console.log(body);
+    return this.http.put(`${this.backend_url}:${this.backend_port}/cart/add`, body)
+  }
 }
