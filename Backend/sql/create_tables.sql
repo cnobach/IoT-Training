@@ -33,7 +33,10 @@ VALUES
 
 -- Cart Table **need to see how i implement cart first, so far barebones**
 CREATE TABLE IF NOT EXISTS cart (
-    ItemID INT,
-    FOREIGN KEY(ItemID) REFERENCES items(ID)
+    cartId SERIAL PRIMARY KEY,
+    userId INT REFERENCES users(ID),
+    items INT[]
 );
+
+INSERT INTO cart (userId, items) VALUES (5, '{1, 2, 4, 5}'), (1, '{6, 7, 8}');
 
