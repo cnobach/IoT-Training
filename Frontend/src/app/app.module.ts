@@ -22,6 +22,7 @@ import { PanelModule } from 'primeng/panel';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { CartComponent } from './pages/cart/cart.component';
 
 
 
@@ -31,7 +32,8 @@ import { InputTextModule } from 'primeng/inputtext';
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
-    NavbarComponent
+    NavbarComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

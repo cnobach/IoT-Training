@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
+  activeLink = 'home';
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -19,5 +21,9 @@ export class NavbarComponent implements OnInit {
     localStorage.clear();
 
     this.router.navigate(['']);
+  }
+
+  toCart() {
+    this.router.navigate(['/cart']);
   }
 }
