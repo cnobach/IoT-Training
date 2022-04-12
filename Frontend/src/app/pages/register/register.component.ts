@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ServerService } from './services/server.service';
 import { PrimeNGConfig } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private server: ServerService,
-    private primeNgConfig: PrimeNGConfig 
+    private primeNgConfig: PrimeNGConfig ,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
@@ -57,7 +59,8 @@ export class RegisterComponent implements OnInit {
 
       this.server.register(this.registerForm.value).subscribe(query => {
         if(query){
-          console.log('user created w/ values:\n', query)
+          alert('user created, routing to log in');
+          this.router.navigate(['login'])
         } else {
           alert('user not created')
         }

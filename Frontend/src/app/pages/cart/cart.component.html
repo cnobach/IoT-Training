@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+<h1 class="text-center p-4">Cart</h1>
+
+<p-messages [value]="msgs"></p-messages>
+
+<p-table [value]="cart">
+
+    <!-- Header of the table -->
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            Your Cart
+            <p-button icon="pi pi-refresh" (click)="refresh()"></p-button>
+        </div>
+    </ng-template>
+
+    <!-- Headers for the rows -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Options</th>
+        </tr>
+    </ng-template>
+
+    <!-- Template for the entire table -->
+    <ng-template pTemplate="body" let-item>
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.price | currency:'USD'}}</td>
+            <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [key]="item.id"></p-confirmDialog>
+            <td> <p-button icon="pi pi-times" (click)="confirmRemove(item.id)"></p-button> </td>
+        </tr>
+    </ng-template>
+
+    <!-- Total cost section -->
+    <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            Total Price: {{totalCost | currency:'USD'}}
+            <p-button icon="pi pi-wallet" (click)="checkout()"></p-button>
+        </div>
+    </ng-template>
+</p-table>
+

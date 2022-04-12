@@ -1,6 +1,8 @@
 require('dotenv').config();
 const { Client } = require('pg');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { createCart } = require('./cart');
 
 /**
  * Database options object. Needed for connection
@@ -27,10 +29,13 @@ function getAllUsers(cb) {
             console.log('connection error', err.stack)
         } else {
             client.query("SELECT * FROM users;", (err, res) => {
+
                 if (err) {
-                    throw err;
+                    console.error('error when getting users: ', err);
+                    cb(false);
+                } else {
+                    cb(res.rows);
                 }
-                cb(res.rows);
 
                 client.end(err => {
                     if (err) {
@@ -67,9 +72,12 @@ function getUserByID(cb, id) {
             client.query(query, (err, res) => {
 
                 if (err) {
-                    throw err;
+                    console.error('error when getting user by id: ', err);
+                    cb(false);
+                } else {
+                    cb(res.rows);
                 }
-                cb(res.rows);
+
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
@@ -100,9 +108,6 @@ function createUser(cb, data) {
             let pass = bcrypt.hashSync(data.password, saltRounds);
             data.password = pass;
 
-            // To see hash uncomment
-            // console.log(pass) 
-
             const query = {
                 name: 'createUser',
                 text: 'INSERT INTO users(name, password, email, address, city, state, zip) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
@@ -112,9 +117,14 @@ function createUser(cb, data) {
             client.query(query, (err, res) => {
 
                 if (err) {
-                    throw err;
+                    console.error('error when creating user: ', err);
+                    cb(false);
+                } else {
+                    createCart(data => {
+                        cb(res.rows);
+                    }, res.rows[0].id);
                 }
-                cb(res.rows);
+
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
@@ -150,9 +160,11 @@ function updateUser(cb, data) {
             client.query(query, (err, res) => {
 
                 if (err) {
-                    throw err;
+                    console.error('error when updating user: ', err);
+                    cb(false);
+                } else {
+                    cb(res.rows);
                 }
-                cb(res.rows);
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
@@ -187,9 +199,12 @@ function deleteUser(cb, id) {
             client.query(query, (err, res) => {
 
                 if (err) {
-                    throw err;
+                    console.error('error when deleting user: ', err);
+                    cb(false);
+                } else {
+                    cb(res.rows);
                 }
-                cb(res.rows);
+
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
@@ -208,7 +223,7 @@ function deleteUser(cb, id) {
  * @param {Callback Function} cb 
  * @param {JSON containing email and pass} data 
  */
-function login(cb, data){
+function login(cb, data) {
     const client = new Client(options);
 
     client.connect(err => {
@@ -218,41 +233,58 @@ function login(cb, data){
 
             const query = {
                 name: 'getUser',
-                text: 'SELECT email, password FROM users WHERE email = $1',
+                text: 'SELECT email, password, id FROM users WHERE email = $1',
                 values: [data.email]
             }
 
             client.query(query, (err, res) => {
 
                 if (err) {
-                    throw err;
-                }
-                
-                let user = res.rows[0]; // Sets user to the email/pass combo
-                
-                if(user != null){ // If user's email was found
-                    
-                    //  Compare hashed passwords
-                    let match = bcrypt.compareSync(data.password, user.password);
+                    console.error('error when logging in user: ', err);
+                    cb(false);
+                } else {
+                    let user = res.rows[0]; // Sets user to the email/pass combo
 
-                    if(match){ //   If they match, login
-                        cb(true);
-                    } else {   //   Else, don't login
+                    if (user != null) { // If user's email was found
+
+                        //  Compare hashed passwords
+                        let match = bcrypt.compareSync(data.password, user.password);
+
+                        if (match) { //   If they match, login
+
+
+                            // Sign the JWT
+                            const key = process.env.JWT_KEY;
+
+                            const token = jwt.sign({}, key, {
+                                expiresIn: '5 minutes'
+                            })
+
+                            let ret = {
+                                userId: user.id,
+                                token: token
+                            }
+
+                            cb(ret);
+                        } else {   //   Else, don't login
+                            cb(false);
+                        }
+
+                    } else { // If user's email was not found
+
                         cb(false);
                     }
 
-                } else { // If user's email was not found
-                    
-                    cb(false);
+                    client.end(err => {
+                        if (err) {
+                            console.log('client hit error in disconnection', err.stack)
+                        } else {
+                            console.log('client disconnected')
+                        }
+                    });
+
                 }
 
-                client.end(err => {
-                    if (err) {
-                        console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
-                    }
-                });
             });
         }
     });

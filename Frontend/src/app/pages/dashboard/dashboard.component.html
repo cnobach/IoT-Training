@@ -1,0 +1,83 @@
+<app-navbar></app-navbar>
+<span *ngIf="user">
+    <h1 class="text-center p-4">Welcome, {{user.name}}.</h1>
+</span>
+
+<p-messages [value]="msgs"></p-messages>
+<!-- Set up of dataview -->
+<div *ngIf="products">
+    <div class="card">
+        
+        <!-- [formControl]="products" -->
+        <p-dataView #dv  [value]="products" [paginator]="true" [rows]="5" filterBy="name" [sortField]="sortField"
+            [sortOrder]="sortOrder" layout="grid">
+
+            <ng-template pTemplate="header">
+                <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                    <!-- [(ngModel)]="sortKey" -->
+                    <p-dropdown [options]="sortOptions" placeholder="Sort By Price" (onChange)="onSortChange($event)"
+                        styleClass="p-mb-2 p-mb-md-0">
+                    </p-dropdown>
+                    <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                        <i class="pi pi-search"></i>
+                        <input type="search" pInputText placeholder="Search by Name"
+                            (input)="dv.filter($any($event.target).value)">
+                    </span>
+                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+            </ng-template>
+
+            <!-- This gives weird errors, gotta fix this -->
+            <ng-template let-product pTemplate="listItem">
+                <div class="p-col-12">
+                    <div class="product-list-item">
+                        <!-- Listing product name and description -->
+                        <div class="product-list-detail">
+
+                            <div class="product-name fs-4 fw-bold">
+                                {{product.name}}
+                            </div>
+
+                            <div class="product-description">
+                                {{product.description}}
+                            </div>
+                        </div>
+                        <!-- Listing product price and Inventory -->
+                        <div class="product-list-action">
+                            <span class="product-price">
+                                ${{product.price}}
+                            </span>
+                            <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [key]="product.id"></p-confirmDialog>
+                            <p-button icon="pi pi-shopping-cart" label="Add to Cart" (click)="confirmAdd(product.id)">
+                            </p-button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            
+            <!-- Need to work on looks here - its ugly rn -->
+            <ng-template let-product pTemplate="gridItem">
+                <div class="p-col-12 p-md-4">
+                    <div class="product-grid-item card">
+                        <div class="product-grid-item-top">
+                            <div>
+                                <i class="pi pi-tag product-category-icon"></i>
+                                <span class="product-id p-2">{{product.id}}</span>
+                            </div>
+                        </div>
+                        <div class="product-grid-item-content">
+                            <div class="product-name fs-4 fw-bold">{{product.name}}</div>
+                            <div class="product-description">{{product.description}}</div>
+                        </div>
+                        <div class="product-grid-item-bottom">
+                            <span class="product-price">${{product.price}}</span>
+                            <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [key]="product.id"></p-confirmDialog>
+                            <p-button icon="pi pi-shopping-cart" (click)="confirmAdd(product.id)"></p-button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+
+        </p-dataView>
+    </div>
+</div>

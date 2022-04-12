@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const bp = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
+const cookieParser = require('cookie-parser');
 
 //  Documents
 const basicInfo = require('./docs/basicInfo');
@@ -24,15 +25,34 @@ const createItem = require('./src/routes/items/createItem')
 const updateItem = require('./src/routes/items/updateItem')
 const deleteItem = require('./src/routes/items/deleteItem')
 
+// Cart Route Dependencies
+const getUserCart = require('./src/routes/cart/getUserCart');
+const removeItem = require('./src/routes/cart/removeItem');
+const clearCart = require('./src/routes/cart/clearCart');
+const addItem = require('./src/routes/cart/addItem');
+
 // Setting app (express)
 const app = express();
+
+var corsOptions = {
+    origin: `http://localhost:4200`,
+    credentials: true
+}
+
+
+app.use(function(req, res, next){
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+})
 
 // Setting to use express.json
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 app.use(morgan("dev"));
 app.use(bp.json());
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(cookieParser());
 
 //  Swagger routes
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(basicInfo));
@@ -56,6 +76,12 @@ app.get('/items/:id', getItemById)
 app.post('/items', createItem)
 app.put('/items', updateItem)
 app.delete('/items/:id', deleteItem)
+
+// Cart routes
+app.get('/cart/:id', getUserCart);
+app.put('/cart/add', addItem);
+app.put('/cart/remove', removeItem);
+app.delete('/cart', clearCart);
 
 // Listening on the .env defined port, and display 
 app.listen(dotenv.parsed.PORT, () => {

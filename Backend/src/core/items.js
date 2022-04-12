@@ -20,10 +20,17 @@ function getAllItems(cb) {
         if (err) {
             console.log('connection error', err.stack);
         } else {
-            client.query('SELECT * FROM items;', (err, res) => {
+
+            const query = {
+                name: 'getAllItems',
+                text: 'SELECT * FROM items;'
+            }
+
+            client.query(query, (err, res) => {
                 if (err) {
                     throw err;
                 }
+
                 cb(res.rows);
                 client.end(err => {
                     if (err) {
@@ -36,6 +43,8 @@ function getAllItems(cb) {
         }
     })
 }
+
+
 
 /**
  * Finds and returns an item based on the ID

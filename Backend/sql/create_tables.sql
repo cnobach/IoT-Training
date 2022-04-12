@@ -1,9 +1,9 @@
 -- User Table
 CREATE TABLE IF NOT EXISTS users (
-    ID SERIAL PRIMARY KEY,
-    name varchar(30) NOT NULL,
+    ID SERIAL PRIMARY KEY unique,
+    name varchar(30) NOT NULL unique,
     password varchar(100) NOT NULL,
-    email varchar(50) NOT NULL,
+    email varchar(50) NOT NULL unique,
     address varchar(50) NOT NULL,
     city varchar(20) NOT NULL,
     state varchar(20) NOT NULL,
@@ -13,12 +13,12 @@ CREATE TABLE IF NOT EXISTS users (
 -- Base Creations
 INSERT INTO users (name, password, email, address, city, state, zip)
 VALUES
-('Connor', 'pass', 'connor@aol.com', '123 sesame st', 'Tempe', 'Arizona', 85282),
-('Stella', 'dog', 'stella@aol.com', '123 sesame st', 'Tempe', 'Arizona', 85282);
+('Admin', 'admin', 'admin@gmail.com', '123 sesame st', 'Tempe', 'Arizona', 85282),
+('User', 'user', 'user@gmail.com', '123 sesame st', 'Tempe', 'Arizona', 85282);
 
 -- Item Table
 CREATE TABLE IF NOT EXISTS items (
-    ID SERIAL PRIMARY KEY,
+    ID SERIAL PRIMARY KEY unique,
     name VARCHAR(30) NOT NULL,
     date DATE NOT NULL,
     description VARCHAR(255),
@@ -33,7 +33,10 @@ VALUES
 
 -- Cart Table **need to see how i implement cart first, so far barebones**
 CREATE TABLE IF NOT EXISTS cart (
-    ItemID INT,
-    FOREIGN KEY(ItemID) REFERENCES items(ID)
+    cartId SERIAL PRIMARY KEY unique,
+    userId INT REFERENCES users(ID) unique,
+    items INT[]
 );
+
+INSERT INTO cart (userId, items) VALUES (5, '{1, 2, 4, 5}'), (1, '{6, 7, 8}');
 
