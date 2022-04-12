@@ -68,4 +68,8 @@ export class CartComponent implements OnInit {
     this.totalCost = 0;
     this.ngOnInit();
   }
+
+  checkout(){
+    alert('checkout pressed');
+  }
 }
