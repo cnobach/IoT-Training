@@ -67,7 +67,9 @@ function getCartByCartId(cartId, cb) {
                 if (err) {
                     throw err;
                 } else {
+                    
                     console.log('look here', res.rows);
+
                     cb(res.rows[0]);
                     client.end(err => {
                         if (err) {
@@ -168,24 +170,6 @@ function addItem(cb, userId, itemId){
         });
 
     }, userId)
-
-    // // Waits for the helper to get the cart by id
-    // getCartByCartId(cartId, cart => {
-    //     console.log(cart)
-    //     cart = cart.items;
-    //     console.log('old cart: ', cart);
-
-    //     // Adds new item to the array
-    //     cart.push(itemId);
-    
-    //     // Waits for the update cart function to run
-    //     let newCart = updateCart(cartId, cart, newCart => {     
-    //         console.log('new cart: ', newCart);
-    //         // Returns the new cart (and ids)
-    //         cb(newCart);
-    //     });
-
-    // });
 }
 
 // Function to clear the users cart

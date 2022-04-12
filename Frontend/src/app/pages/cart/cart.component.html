@@ -1,13 +1,15 @@
 <app-navbar></app-navbar>
 <h1 class="text-center p-4">Cart</h1>
 
+<p-messages [value]="msgs"></p-messages>
+
 <p-table [value]="cart">
 
     <!-- Header of the table -->
     <ng-template pTemplate="caption">
         <div class="p-d-flex p-ai-center p-jc-between">
             Your Cart
-            <p-button icon="pi pi-refresh"></p-button>
+            <p-button icon="pi pi-refresh" (click)="refresh()"></p-button>
         </div>
     </ng-template>
 
@@ -27,7 +29,8 @@
             <td>{{item.name}}</td>
             <td>{{item.quantity}}</td>
             <td>{{item.price | currency:'USD'}}</td>
-            <td> <p-button icon="pi pi-times"></p-button> </td>
+            <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [key]="item.id"></p-confirmDialog>
+            <td> <p-button icon="pi pi-times" (click)="confirmRemove(item.id)"></p-button> </td>
         </tr>
     </ng-template>
 

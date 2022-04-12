@@ -20,4 +20,15 @@ export class ServerService {
   fetchItems(id:any): Observable<any>{
     return this.http.get(`${this.backend_url}:${this.backend_port}/items/` + id);
   }
+
+  removeFromCart(itemId: any, cartId: any): Observable<any>{
+    let body = {
+      itemId: itemId,
+      cartId: cartId
+    }
+
+    console.log(body);
+
+    return this.http.put(`${this.backend_url}:${this.backend_port}/cart/remove`, body);
+  }
 }
