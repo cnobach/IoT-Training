@@ -31,4 +31,11 @@ export class ServerService {
 
     return this.http.put(`${this.backend_url}:${this.backend_port}/cart/remove`, body);
   }
+
+  checkout(cart: any, custId:any): Observable<any> {
+
+    
+
+  }
+
 }

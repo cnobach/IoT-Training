@@ -32,10 +32,8 @@ function newTrans(cb, body){
                     cb(true);
                 }
             })
-
         }
     })
-
 }
 
 module.exports = {
