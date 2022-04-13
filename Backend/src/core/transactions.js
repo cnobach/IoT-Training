@@ -37,3 +37,7 @@ function newTrans(cb, body){
     })
 
 }
+
+module.exports = {
+    newTrans
+}
