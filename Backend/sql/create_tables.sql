@@ -40,3 +40,24 @@ CREATE TABLE IF NOT EXISTS cart (
 
 INSERT INTO cart (userId, items) VALUES (5, '{1, 2, 4, 5}'), (1, '{6, 7, 8}');
 
+-- inventory table to check for the amount of items in the 'warehouse'
+CREATE TABLE IF NOT EXISTS inventory (
+    itemId INT REFERENCES items(ID) unique,
+    quantity INT NOT NULL
+);
+
+-- Transaction table to keep record of all past transactions
+CREATE TABLE IF NOT EXISTS transaction (
+    items INT[],
+    customer INT REFERENCES users(ID),
+    date DATE NOT NULL
+);
+
+-- Drop Commands in order
+DROP TABLE transaction;
+DROP TABLE inventory;
+DROP TABLE cart;
+DROP TABLE items;
+DROP TABLE users;
+
+-- Create the tables in opposite orders
