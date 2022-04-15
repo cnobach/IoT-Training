@@ -32,10 +32,45 @@ export class ServerService {
     return this.http.put(`${this.backend_url}:${this.backend_port}/cart/remove`, body);
   }
 
-  checkout(cart: any, custId:any): Observable<any> {
 
-    
+  checkout(cart: any, custId:any, cb: any): void {
 
+    let itemCount = 0; 
+    let flag = true;
+
+    for(let i = 0; i<cart.length; i++) {
+
+      // Gets quantity of the first item
+      this.http.get(`${this.backend_url}:${this.backend_port}/inventory/` + custId).subscribe(count => {
+
+        itemCount = count[0].quantity;
+
+        //  If there's enough inventory
+        if(itemCount > 0 && flag){
+          itemCount -= 1;
+          let body = {
+            amount: itemCount
+          }
+
+          this.http.put(`${this.backend_url}:${this.backend_port}/inventory/` + custId, body).subscribe(res => {
+            
+            if(!res){
+              flag = false;
+            }
+
+          })
+
+          // If inventory too low
+        } else {
+          flag = false;
+        }
+
+      });
+    }
+    cb(flag);
   }
 
+  clearCart(cartId:any): Observable<any> {
+    return this.http.delete(`${this.backend_url}:${this.backend_port}/cart/` + cartId);
+  }
 }

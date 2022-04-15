@@ -88,7 +88,7 @@ app.delete('/items/:id', deleteItem)
 app.get('/cart/:id', getUserCart);
 app.put('/cart/add', addItem);
 app.put('/cart/remove', removeItem);
-app.delete('/cart', clearCart);
+app.delete('/cart/:id', clearCart);
 
 // Transaction route
 app.put('/trans/new', newTrans);

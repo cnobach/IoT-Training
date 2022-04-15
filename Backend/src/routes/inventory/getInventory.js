@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
             body = {
                 amount: data
             }
-            res.status(200).send(body)
+            res.status(200).send(data)
         }
     }, req.params['id'])
 }

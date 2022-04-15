@@ -29,6 +29,7 @@ function getInventory(cb, id){
                     console.log('Couldnt find inventory:\n', err.stack);
                     cb(-1);
                 } else {
+                    console.log(res.rows);
                     cb(res.rows);
                 }
             })

@@ -3,12 +3,9 @@ const { setInventory } = require('../../core/inventory');
 module.exports = async (req, res) => {
     setInventory(data => {
         if(data == false){
-            res.status(500).send('Internal Server Error');
+            res.status(500).send(false);
         } else {
-            body = {
-                amount: data
-            }
-            res.status(200).send(body)
+            res.status(200).send(true)
         }
     }, req.params['id'], req.body)
 }

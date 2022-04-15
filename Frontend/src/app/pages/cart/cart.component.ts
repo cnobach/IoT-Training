@@ -79,11 +79,14 @@ export class CartComponent implements OnInit {
 
       accept: () => {
 
-        this.server.checkout(this.cartObject.items, localStorage.getItem('userId')).subscribe(data => {
+        this.server.checkout(this.cartObject.items, localStorage.getItem('userId'), (data:Boolean)=> {
           if (data == true) {
             this.clearCart();
             this.refresh();
             this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Items have been ordered!' }]
+          } else if(data != true){
+            this.msgs = [{ severity: 'info', summary: 'Error', detail: 'An error has occurred. Please try again' }]
+            this.refresh();
           }
         })
       },
@@ -97,6 +100,10 @@ export class CartComponent implements OnInit {
   }
 
   clearCart(){
-    alert('TODO: Clear the cart')
+    this.server.clearCart(this.cartId).subscribe(data => {
+
+      this.refresh();
+
+    })
   }
 }
