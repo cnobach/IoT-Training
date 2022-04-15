@@ -26,9 +26,62 @@ export class ServerService {
       itemId: itemId,
       cartId: cartId
     }
-
-    console.log(body);
-
     return this.http.put(`${this.backend_url}:${this.backend_port}/cart/remove`, body);
+  }
+
+
+  checkout(cart: any, custId:any, cb: any): void {
+
+    let itemCount = 0; 
+    let flag = true;
+
+    
+
+    for(let i = 0; i<cart.length; i++) {
+
+      console.log('CART ITEM: ', cart[i])
+
+      // Gets quantity of the first item
+      this.http.get(`${this.backend_url}:${this.backend_port}/inventory/` + cart[i]).subscribe(count => {
+
+        itemCount = count[0].quantity;
+
+        console.log('\nCount for ITEM: ', cart[i], 'IS: ', itemCount)
+
+        //  If there's enough inventory
+        if(itemCount > 0 && flag){
+          itemCount -= 1;
+          let body = {
+            amount: itemCount
+          }
+
+          this.http.put(`${this.backend_url}:${this.backend_port}/inventory/` + cart[i], body).subscribe(res => {
+            
+            if(!res){
+              flag = false;
+            }
+
+          })
+
+          // If inventory too low
+        } else {
+          flag = false;
+        }
+
+      });
+    }
+    cb(flag);
+  }
+
+  clearCart(cartId:any): Observable<any> {
+    return this.http.delete(`${this.backend_url}:${this.backend_port}/cart/` + cartId);
+  }
+
+  createTransaction(cart:any, userId:any): Observable<any> {
+    let body = {
+      items: cart,
+      id: userId
+    }
+    return this.http.put(`${this.backend_url}:${this.backend_port}/trans/new`, body);
   }
 }

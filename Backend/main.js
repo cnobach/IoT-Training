@@ -34,6 +34,10 @@ const addItem = require('./src/routes/cart/addItem');
 // Transaction Route Dependencies
 const newTrans = require('./src/routes/transactions/newTrans');
 
+// Inventory Route Dependencies
+const getInventory = require('./src/routes/inventory/getInventory');
+const setInventory = require('./src/routes/inventory/setInventory');
+
 // Setting app (express)
 const app = express();
 
@@ -84,10 +88,15 @@ app.delete('/items/:id', deleteItem)
 app.get('/cart/:id', getUserCart);
 app.put('/cart/add', addItem);
 app.put('/cart/remove', removeItem);
-app.delete('/cart', clearCart);
+app.delete('/cart/:id', clearCart);
 
 // Transaction route
 app.put('/trans/new', newTrans);
+
+// Inventory route
+app.get('/inventory/:id', getInventory)
+app.put('/inventory/:id', setInventory)
+
 
 // Listening on the .env defined port, and display 
 app.listen(dotenv.parsed.PORT, () => {

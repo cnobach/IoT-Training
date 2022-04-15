@@ -96,9 +96,6 @@ function createItem(cb, data) {
             console.log('error connecting', err.stack);
         } else {
 
-            data.date = new Date(data.date);
-            console.log('\n\n', data.date);
-
             const query = {
                 name: 'createItem',
                 text: 'INSERT INTO items(name, date, description, price) VALUES($1, $2, $3, $4) RETURNING *;',
@@ -110,14 +107,30 @@ function createItem(cb, data) {
                 if (err) {
                     throw err;
                 }
-                cb(res.rows);
-                client.end(err => {
-                    if (err) {
-                        console.log('client hit error in disconnection', err.stack)
+
+                const q2 = {
+                    name: 'setInventory', 
+                    text: 'INSERT INTO inventory(itemId, quantity) VALUES($1, $2)',
+                    values: [res.rows[0].id, 10]
+                }
+
+                let ret = res.rows;
+
+                client.query(q2, (err, res) => {
+                    if(err){
+                        console.log('\n\nCouldnt set inventory,\n', err.stack);
+                        cb(false);
                     } else {
-                        console.log('client disconnected')
+                        cb(ret);
                     }
-                });
+                    client.end(err => {
+                        if (err) {
+                            console.log('client hit error in disconnection', err.stack)
+                        } else {
+                            console.log('client disconnected')
+                        }
+                    });
+                })
             });
         }
     });
