@@ -76,4 +76,12 @@ export class ServerService {
   clearCart(cartId:any): Observable<any> {
     return this.http.delete(`${this.backend_url}:${this.backend_port}/cart/` + cartId);
   }
+
+  createTransaction(cart:any, userId:any): Observable<any> {
+    let body = {
+      items: cart,
+      id: userId
+    }
+    return this.http.put(`${this.backend_url}:${this.backend_port}/trans/new`, body);
+  }
 }
