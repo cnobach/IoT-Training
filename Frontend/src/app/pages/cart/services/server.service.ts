@@ -26,9 +26,6 @@ export class ServerService {
       itemId: itemId,
       cartId: cartId
     }
-
-    console.log(body);
-
     return this.http.put(`${this.backend_url}:${this.backend_port}/cart/remove`, body);
   }
 
@@ -38,12 +35,18 @@ export class ServerService {
     let itemCount = 0; 
     let flag = true;
 
+    
+
     for(let i = 0; i<cart.length; i++) {
 
+      console.log('CART ITEM: ', cart[i])
+
       // Gets quantity of the first item
-      this.http.get(`${this.backend_url}:${this.backend_port}/inventory/` + custId).subscribe(count => {
+      this.http.get(`${this.backend_url}:${this.backend_port}/inventory/` + cart[i]).subscribe(count => {
 
         itemCount = count[0].quantity;
+
+        console.log('\nCount for ITEM: ', cart[i], 'IS: ', itemCount)
 
         //  If there's enough inventory
         if(itemCount > 0 && flag){
@@ -52,7 +55,7 @@ export class ServerService {
             amount: itemCount
           }
 
-          this.http.put(`${this.backend_url}:${this.backend_port}/inventory/` + custId, body).subscribe(res => {
+          this.http.put(`${this.backend_url}:${this.backend_port}/inventory/` + cart[i], body).subscribe(res => {
             
             if(!res){
               flag = false;
