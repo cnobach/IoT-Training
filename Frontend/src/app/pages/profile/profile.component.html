@@ -1,0 +1,112 @@
+<app-navbar></app-navbar>
+<p-messages [value]="msgs"></p-messages>
+<div *ngIf="user">
+    <p-card class="card" header={{user.name}}>
+
+        <div *ngIf="view" style="width: 75%; margin: auto;">
+            <p>
+                Name: <span style="float: right;">{{user.name}}</span>
+            </p>
+            <p>
+                Email: <span style="float: right;">{{user.email}}</span>
+            </p>
+            <p>
+                Address: <span style="float: right;">{{user.address}}</span>
+            </p>
+            <p>
+                City: <span style="float: right;">{{user.city}}</span>
+            </p>
+            <p>
+                State: <span style="float: right;">{{user.state}}</span>
+            </p>
+            <p>
+                ZIP: <span style="float: right;">{{user.zip}}</span>
+            </p>
+            <p-button label="Edit" (click)="editMode()"></p-button>
+        </div>
+
+        <div *ngIf="!view">
+            <div class="editform">
+
+                <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+
+                    <!-- Name Input -->
+                    <div class="form-group">
+                        <span class="p-float-label">
+                            <input type="text" formControlName="name" id="name" class="form-control"
+                                [ngClass]="{'is-invalid': f['name'].errors }" pInputText>
+                            <label for="name">Name</label>
+                        </span>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div class="form-group">
+                        <span class="p-float-label">
+                            <input type="text" formControlName="email" id="email" class="form-control"
+                                [ngClass]="{'is-invalid': f['email'].errors }" pInputText>
+                            <label for="email">Email</label>
+                        </span>
+                    </div>
+
+                    <!-- Address Input -->
+                    <div class="form-group">
+                        <span class="p-float-label">
+                            <input type="text" formControlName="address" id="address" class="form-control"
+                                [ngClass]="{'is-invalid': f['address'].errors }" pInputText>
+                            <label for="address">Address</label>
+                        </span>
+                    </div>
+
+                    <!-- City Input -->
+                    <div class="form-group">
+                        <span class="p-float-label">
+                            <input type="text" formControlName="city" id="city" class="form-control"
+                                [ngClass]="{'is-invalid': f['city'].errors }" pInputText>
+                            <label for="city">City</label>
+                        </span>
+                    </div>
+
+                    <!-- State Input -->
+                    <div class="form-group">
+                        <span class="p-float-label">
+                            <input type="text" formControlName="state" id="state" class="form-control"
+                                [ngClass]="{'is-invalid': f['state'].errors }" pInputText>
+                            <label for="state">State</label>
+                        </span>
+                    </div>
+
+                    <!-- Zip Input -->
+                    <div class="form-group">
+                        <span class="p-float-label">
+                            <input type="text" formControlName="zip" id="zip" class="form-control"
+                                [ngClass]="{'is-invalid': f['zip'].errors }" pInputText>
+                            <label for="zip">Zip</label>
+                        </span>
+                    </div>
+
+                    <div class="form-control">
+                        <!-- If the form is invalid, disable the button -->
+                        <div *ngIf="editForm.invalid; else enabled">
+            
+                            <!-- PrimeNG Button -->
+                            <button pButton disabled pRipple type="button" label="Submit" class="p-button-raised"></button>
+                            <button (click)="onReset()" pButton pRipple type="button" label="Cancel"
+                                class="p-button-raised p-button-danger"></button>
+            
+                        </div>
+                        <!-- Else show it -->
+                        <ng-template #enabled>
+                            <button (click)="onSubmit()" pButton pRipple type="button" label="Submit"
+                                class="p-button-raised"></button>
+                            <button (click)="onReset()" pButton pRipple type="button" label="Cancel"
+                                class="p-button-raised p-button-danger"></button>
+                        </ng-template>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </p-card>
+</div>

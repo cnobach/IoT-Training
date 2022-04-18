@@ -5,7 +5,8 @@ module.exports = async (req, res) => {
         if(data == false){
             res.status(500).send('Internal Server Error');
         } else {
-            res.status(200).send({message: data})
+            console.log('Sent after update: ', data);
+            res.status(200).send(data)
         }
     }, req.body)
 }

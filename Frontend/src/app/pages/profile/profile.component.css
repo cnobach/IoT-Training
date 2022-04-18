@@ -1,0 +1,13 @@
+p-card {
+    margin: auto;
+    width: 75%;
+    padding-top: 5rem;
+}
+
+.card {
+    border: none;
+}
+
+.form-group {
+    padding-top: 2rem;
+}

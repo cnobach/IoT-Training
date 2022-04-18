@@ -26,6 +26,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { CardModule } from 'primeng/card';
 
 
 
@@ -37,7 +39,8 @@ import { ConfirmationService } from 'primeng/api';
     RegisterComponent,
     DashboardComponent,
     NavbarComponent,
-    CartComponent
+    CartComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +59,8 @@ import { ConfirmationService } from 'primeng/api';
     DialogModule,
     InputTextModule,
     TableModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    CardModule
   ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent]
