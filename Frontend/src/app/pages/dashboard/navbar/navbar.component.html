@@ -1,21 +1,2 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="container-fluid">
-        <!-- Brand -->
-        <a href="#" class="navbar-brand">RadioShack 2.0</a>
 
-        <!-- Button Toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Collapse Section -->
-        <div class="collapse navbar-collapse" id="navbar">
-            <div class="navbar-nav">
-                <a class="nav-link" routerLinkActive="active" routerLink="/dashboard">Home</a>
-                <a class="nav-link" routerLinkActive="active" routerLink="/profile">Profile</a>
-                <a class="nav-link" routerLinkActive="active" routerLink="/cart">Cart</a>
-                <a class="nav-link" (click)="signOut()">Sign Out</a>
-            </div>
-        </div>
-    </div>
-</nav>
+<p-menubar [model]="nav" styleClass="p-menu-dark"></p-menubar>
