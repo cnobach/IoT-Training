@@ -14,11 +14,11 @@ export class ServerService {
   backend_port = environment.backendPort;
 
   getCart(id: any): Observable<any>{
-    return this.http.get(`${this.backend_url}:${this.backend_port}/cart/` + id);
+    return this.http.get(`${this.backend_url}:${this.backend_port}/cart/` + id, {withCredentials: true});
   }
 
   fetchItems(id:any): Observable<any>{
-    return this.http.get(`${this.backend_url}:${this.backend_port}/items/` + id);
+    return this.http.get(`${this.backend_url}:${this.backend_port}/items/` + id, {withCredentials: true});
   }
 
   removeFromCart(itemId: any, cartId: any): Observable<any>{
@@ -26,7 +26,7 @@ export class ServerService {
       itemId: itemId,
       cartId: cartId
     }
-    return this.http.put(`${this.backend_url}:${this.backend_port}/cart/remove`, body);
+    return this.http.put(`${this.backend_url}:${this.backend_port}/cart/remove`, body, {withCredentials: true});
   }
 
 
@@ -42,7 +42,7 @@ export class ServerService {
       console.log('CART ITEM: ', cart[i])
 
       // Gets quantity of the first item
-      this.http.get(`${this.backend_url}:${this.backend_port}/inventory/` + cart[i]).subscribe(count => {
+      this.http.get(`${this.backend_url}:${this.backend_port}/inventory/` + cart[i], {withCredentials: true}).subscribe(count => {
 
         itemCount = count[0].quantity;
 
@@ -55,7 +55,7 @@ export class ServerService {
             amount: itemCount
           }
 
-          this.http.put(`${this.backend_url}:${this.backend_port}/inventory/` + cart[i], body).subscribe(res => {
+          this.http.put(`${this.backend_url}:${this.backend_port}/inventory/` + cart[i], body, {withCredentials: true}).subscribe(res => {
             
             if(!res){
               flag = false;
@@ -74,7 +74,7 @@ export class ServerService {
   }
 
   clearCart(cartId:any): Observable<any> {
-    return this.http.delete(`${this.backend_url}:${this.backend_port}/cart/` + cartId);
+    return this.http.delete(`${this.backend_url}:${this.backend_port}/cart/` + cartId, {withCredentials: true});
   }
 
   createTransaction(cart:any, userId:any): Observable<any> {
@@ -82,6 +82,6 @@ export class ServerService {
       items: cart,
       id: userId
     }
-    return this.http.put(`${this.backend_url}:${this.backend_port}/trans/new`, body);
+    return this.http.put(`${this.backend_url}:${this.backend_port}/trans/new`, body, {withCredentials: true});
   }
 }
