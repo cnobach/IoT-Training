@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +11,7 @@ export class NavbarComponent implements OnInit {
 
   activeLink = 'home';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private cookies: CookieService) { }
 
   ngOnInit(): void {
   }
@@ -19,6 +20,7 @@ export class NavbarComponent implements OnInit {
     console.log('user signed out');
 
     localStorage.clear();
+    this.cookies.delete('token', '/', 'localhost', false);
 
     this.router.navigate(['']);
   }

@@ -14,11 +14,11 @@ export class ServerService {
   backend_port = environment.backendPort;
 
   getUser(id: any): Observable<any>{
-    return this.http.get(`${this.backend_url}:${this.backend_port}/users/` + id);
+    return this.http.get(`${this.backend_url}:${this.backend_port}/users/` + id, {withCredentials: true});
   }
 
   getItems(): Observable<any>{
-    return this.http.get(`${this.backend_url}:${this.backend_port}/items`)
+    return this.http.get(`${this.backend_url}:${this.backend_port}/items`, {withCredentials: true})
   }
 
   addToCart(itemId: any, userId: any){
@@ -28,6 +28,6 @@ export class ServerService {
     }
 
     console.log(body);
-    return this.http.put(`${this.backend_url}:${this.backend_port}/cart/add`, body)
+    return this.http.put(`${this.backend_url}:${this.backend_port}/cart/add`, body, {withCredentials: true})
   }
 }

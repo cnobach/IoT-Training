@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { HttpInterceptorService } from './services/http-interceptor.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,8 +30,10 @@ import { ConfirmationService } from 'primeng/api';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CardModule } from 'primeng/card';
 
-
-
+// Toastr
+import { ToastrModule } from 'ngx-toastr';
+// CookieService
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -60,9 +63,12 @@ import { CardModule } from 'primeng/card';
     InputTextModule,
     TableModule,
     ConfirmDialogModule,
-    CardModule
+    CardModule,
+    ToastrModule.forRoot()
   ],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, CookieService, 
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

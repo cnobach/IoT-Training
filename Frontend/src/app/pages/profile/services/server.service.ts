@@ -14,10 +14,10 @@ export class ServerService {
   backend_port = environment.backendPort;
 
   getUser(id: any): Observable<any>{
-    return this.http.get(`${this.backend_url}:${this.backend_port}/users/` + id);
+    return this.http.get(`${this.backend_url}:${this.backend_port}/users/` + id, {withCredentials: true});
   }
 
   updateUser(body: any): Observable<any>{
-    return this.http.put(`${this.backend_url}:${this.backend_port}/users/`, body);
+    return this.http.put(`${this.backend_url}:${this.backend_port}/users/`, body, {withCredentials: true});
   }
 }

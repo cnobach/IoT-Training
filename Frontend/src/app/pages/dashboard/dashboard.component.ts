@@ -5,7 +5,8 @@ import { ServerService } from './services/server.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
-import { Message } from 'primeng/api';;
+import { NotificationService } from 'src/app/services/notification.service';
+;
 
 @Component({
   selector: 'app-dashboard',
@@ -21,13 +22,12 @@ export class DashboardComponent implements OnInit {
   sortOrder: number = 0;
   sortField: string = '';
 
-  msgs: Message[] = [];
-
   constructor(
     private router: Router,
     private server: ServerService,
     private primeNg: PrimeNGConfig,
-    private confirmServ: ConfirmationService
+    private confirmServ: ConfirmationService,
+    private toastr: NotificationService
     ) { }
 
   //  If the user is not logged in, route to login page
@@ -103,12 +103,11 @@ export class DashboardComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.addToCart(itemId, () => {
-          this.msgs = [{severity:'info', summary:'Confirmed', detail:'Item added!'}]
+          this.toastr.success('Item was added to your cart!', 'Success');
         })
       },
       reject: () => {
-        this.msgs = [{severity: 'info', summary: 'Declined', detail:'Item was not added.'}]
-      },
+        this.toastr.info('Item was not added to your cart', 'Cancelled');      },
       key: itemId
     })
   }
