@@ -76,12 +76,13 @@ function authJwt(req, res, next){
     if(token){
         jwt.verify(token, process.env.JWT_KEY, (err, user) => {
             if(err){
-                return res.status(403).send('Authentication Error');
+                res.cookie('token', '');
+                return res.status(401).send('Authentication Error');
             }
             next();
         })
     } else {
-        res.status(401).send('Unauthorized');
+        res.status(403).send('Unauthorized');
     }
 }
 

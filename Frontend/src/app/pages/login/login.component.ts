@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
 
       this.server.login(this.loginForm.value).subscribe(query => {
         if(query){ // If success - set userID in localstorage and route to home
-          console.log(query)
           localStorage.setItem('userId', query.userId);
           this.router.navigate(['dashboard']);
         } else { // Else alert that it was incorrect
