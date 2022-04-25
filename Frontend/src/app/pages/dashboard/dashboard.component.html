@@ -8,7 +8,7 @@
     <div class="card">
         
         <!-- [formControl]="products" -->
-        <p-dataView #dv  [value]="products" [paginator]="true" [rows]="5" filterBy="name" [sortField]="sortField"
+        <p-dataView #dv  [value]="products" [paginator]="true" [rows]="5" [columns]="2" filterBy="name" [sortField]="sortField"
             [sortOrder]="sortOrder" layout="grid">
 
             <ng-template pTemplate="header">

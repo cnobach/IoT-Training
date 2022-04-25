@@ -29,6 +29,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CardModule } from 'primeng/card';
+import { MenubarModule } from 'primeng/menubar';
 
 // Toastr
 import { ToastrModule } from 'ngx-toastr';
@@ -64,6 +65,7 @@ import { CookieService } from 'ngx-cookie-service';
     TableModule,
     ConfirmDialogModule,
     CardModule,
+    MenubarModule,
     ToastrModule.forRoot()
   ],
   providers: [ConfirmationService, CookieService, 
