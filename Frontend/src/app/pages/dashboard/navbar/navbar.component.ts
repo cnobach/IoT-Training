@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,7 @@ export class NavbarComponent implements OnInit {
   activeLink = 'home';
   nav: MenuItem[];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private cookies: CookieService) { }
 
   ngOnInit(): void {
     this.nav = [
@@ -52,6 +53,7 @@ export class NavbarComponent implements OnInit {
 
   signOut(){
     localStorage.clear();
+    this.cookies.delete('token', '/', 'localhost', false);
     this.router.navigate(['']);
   }
 

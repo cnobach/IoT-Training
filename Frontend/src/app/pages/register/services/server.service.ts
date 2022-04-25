@@ -14,6 +14,6 @@ export class ServerService {
   constructor(private http: HttpClient) { }
 
   register(user: any): Observable<any>{
-    return this.http.post(`${this.backend_url}:${this.backend_port}/users`, user);
+    return this.http.post(`${this.backend_url}:${this.backend_port}/users`, user, {withCredentials: true});
   }
 }

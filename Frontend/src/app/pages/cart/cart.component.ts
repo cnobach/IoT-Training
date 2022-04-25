@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { ServerService } from './services/server.service';
-import { Message } from 'primeng/api';;
+import { NotificationService } from 'src/app/services/notification.service';
 
 
 @Component({
@@ -16,9 +16,11 @@ export class CartComponent implements OnInit {
   cartId: any;
   totalCost: any = 0;
 
-  msgs: Message[] = [];
-
-  constructor(private server: ServerService, private confirmServ: ConfirmationService) { }
+  constructor(
+    private server: ServerService,
+    private confirmServ: ConfirmationService,
+    private toastr: NotificationService
+    ) { }
 
   ngOnInit(): void {
     // Fetches the cart from the dB based on the userId in localStorage
@@ -53,11 +55,11 @@ export class CartComponent implements OnInit {
       accept: () => {
         this.removeFromCart(itemId, () => {
           this.refresh();
-          this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Item was removed!' }]
+          this.toastr.success('Item was removed', 'Success')
         })
       },
       reject: () => {
-        this.msgs = [{ severity: 'info', summary: 'Declined', detail: 'Item was not removed.' }]
+        this.toastr.info('Item was not removed', 'Cancelled')
       },
       key: itemId
     })
@@ -84,18 +86,18 @@ export class CartComponent implements OnInit {
 
             this.server.createTransaction(this.cartObject.items, localStorage.getItem('userId')).subscribe(data => {
               this.clearCart();
-              this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Items have been ordered!' }]
+              this.toastr.success('Your items have been ordered!', 'Confirmation');
             });
 
           } else if(data != true){
-            this.msgs = [{ severity: 'info', summary: 'Error', detail: 'An error has occurred. Please try again' }]
+            this.toastr.error('An Error has occurred. Please try again.', 'Error');
             this.refresh();
           }
         })
       },
 
       reject: () => {
-        this.msgs = [{ severity: 'info', summary: 'Declined', detail: 'Checkout Cancelled' }]
+        this.toastr.info('Transaction cancelled', 'Cancelled')
       },
     })
 

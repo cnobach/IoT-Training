@@ -6,6 +6,7 @@ const cors = require('cors');
 const bp = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 //  Documents
 const basicInfo = require('./docs/basicInfo');
@@ -69,33 +70,49 @@ app.get('/', (req, res) => {
     res.status(200).send('Connected Successfully');
 })
 
+// Authenticate JWT
+function authJwt(req, res, next){
+    const token = req.cookies.token;
+    if(token){
+        jwt.verify(token, process.env.JWT_KEY, (err, user) => {
+            if(err){
+                res.cookie('token', '');
+                return res.status(401).send('Authentication Error');
+            }
+            next();
+        })
+    } else {
+        res.status(403).send('Unauthorized');
+    }
+}
+
 //  User Routes
-app.get('/users', getAllUsers);
-app.get('/users/:id', getUserByID);
-app.post('/users', createUser);
-app.put('/users', updateUser);
-app.delete('/users/:id', deleteUser);
+app.get('/users', authJwt, getAllUsers);
+app.get('/users/:id', authJwt, getUserByID);
+app.post('/users', authJwt, createUser);
+app.put('/users', authJwt, updateUser);
+app.delete('/users/:id', authJwt, deleteUser);
 app.post('/login', login)
 
 //  Item routes
-app.get('/items', getAllItems)
-app.get('/items/:id', getItemById)
-app.post('/items', createItem)
-app.put('/items', updateItem)
-app.delete('/items/:id', deleteItem)
+app.get('/items', authJwt, getAllItems)
+app.get('/items/:id', authJwt, getItemById)
+app.post('/items', authJwt, createItem)
+app.put('/items', authJwt, updateItem)
+app.delete('/items/:id', authJwt, deleteItem)
 
 // Cart routes
-app.get('/cart/:id', getUserCart);
-app.put('/cart/add', addItem);
-app.put('/cart/remove', removeItem);
-app.delete('/cart/:id', clearCart);
+app.get('/cart/:id', authJwt, getUserCart);
+app.put('/cart/add', authJwt, addItem);
+app.put('/cart/remove', authJwt, removeItem);
+app.delete('/cart/:id', authJwt, clearCart);
 
 // Transaction route
-app.put('/trans/new', newTrans);
+app.put('/trans/new', authJwt, newTrans);
 
 // Inventory route
-app.get('/inventory/:id', getInventory)
-app.put('/inventory/:id', setInventory)
+app.get('/inventory/:id', authJwt, getInventory)
+app.put('/inventory/:id', authJwt, setInventory)
 
 
 // Listening on the .env defined port, and display 

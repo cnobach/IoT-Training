@@ -257,7 +257,7 @@ function login(cb, data) {
                             const key = process.env.JWT_KEY;
 
                             const token = jwt.sign({}, key, {
-                                expiresIn: '5 minutes'
+                                expiresIn: '15 minutes'
                             })
 
                             let ret = {

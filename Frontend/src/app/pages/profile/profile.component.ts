@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ServerService } from './services/server.service';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { Message, PrimeNGConfig } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,9 +14,11 @@ export class ProfileComponent implements OnInit {
   user: any;
   view: Boolean = true;
 
-  msgs: Message[] = [];
-
-  constructor(private server: ServerService, private fb: FormBuilder, private primeNgConfig: PrimeNGConfig) { }
+  constructor(private server: ServerService, 
+    private fb: FormBuilder, 
+    private primeNgConfig: PrimeNGConfig,
+    private toastr: NotificationService
+    ) { }
 
   ngOnInit(): void {
     this.primeNgConfig.ripple = true;
@@ -58,12 +61,12 @@ export class ProfileComponent implements OnInit {
     
     this.server.updateUser(obj).subscribe(ret => {
       this.user = ret[0];
-      this.msgs = [{severity:'info', summary:'Confirmed', detail:'Information Updated!'}]
-      this.view = true;
+      this.toastr.success('Your information has been updated.', 'Success');      this.view = true;
     })
   }
 
   onReset(){
+    this.toastr.info('Your information has not been changed.', 'Action Cancelled');
     this.view=true;
   }
 
