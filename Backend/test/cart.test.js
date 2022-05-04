@@ -59,7 +59,6 @@ describe("GET /cart/:id", () => {
                     //  Check type and length
                     expect(Array.isArray(res.body)).toBeTruthy();
                     expect(res.body.length).toEqual(0);
-
                 })
         })
     })
@@ -68,15 +67,87 @@ describe("GET /cart/:id", () => {
 
 // Adding an item to the cart
 describe("PUT /cart/add", ()=> {
+    test("Should add item to the cart", async() => {
 
+        const cartArr = [1];
+
+        await agent.put('/cart/add')
+            .expect(200)
+            .set('token', cookie)
+            .send({
+                itemId: 1,
+                userId: 3 
+            })
+            .then((res) => {
+                // Check data
+                expect(res.body.cartid).toBe(3);
+                expect(res.body.userid).toBe(3);
+                expect(res.body.items).toEqual(cartArr);
+            })
+    })
 })
 
 // Removing an item from a cart
 describe("PUT /cart/remove", () => {
+    test("Should remove item from the cart", async() => {
 
+        const cartArr = [];
+
+        await agent.put('/cart/remove')
+            .expect(200)
+            .set('token', cookie)
+            .send({
+                itemId: 1,
+                cartId: 3 
+            })
+            .then((res) => {
+                // Check data
+                expect(res.body.cartid).toBe(3);
+                expect(res.body.userid).toBe(3);
+                expect(res.body.items).toEqual(cartArr);
+            })
+    })
 })
 
 // Deleting a cart
 describe("DELETE /cart/:id", () => {
+    test("Should remove all items from the cart", async() => {
 
+        await agent.put('/cart/add')
+        .expect(200)
+        .set('token', cookie)
+        .send({
+            itemId: 1,
+            userId: 3 
+        })
+        await agent.put('/cart/add')
+        .expect(200)
+        .set('token', cookie)
+        .send({
+            itemId: 2,
+            userId: 3 
+        })
+        await agent.put('/cart/add')
+        .expect(200)
+        .set('token', cookie)
+        .send({
+            itemId: 3,
+            userId: 3 
+        })
+
+        const cartArr = [];
+
+        await agent.delete('/cart/3')
+            .expect(200)
+            .set('token', cookie)
+            .send({
+                cartId: 3 
+            })
+            .then((res) => {
+                // Check data
+                expect(res.body.cartid).toBe(3);
+                expect(res.body.userid).toBe(3);
+                expect(res.body.items).toEqual(cartArr);
+            })
+    })
 })
