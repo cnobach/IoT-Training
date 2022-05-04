@@ -7,7 +7,7 @@
     "verbose": true
   },
   "scripts": {
-    "test": "npx jest cart.test.js",
+    "test": "npx jest inventory.test.js",
     "start": "nodemon server.js"
   },
   "repository": {
