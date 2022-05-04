@@ -42,17 +42,18 @@
             <div *ngIf="loginForm.invalid; else enabled">
 
                 <!-- PrimeNG Button -->
-                <button pButton disabled pRipple type="button" label="Submit" class="p-button-raised"></button>
+                <button pButton disabled pRipple type="button" label="Submit" class="p-button-raised"
+                [ngStyle]="{backgroundColor:'var(--teal-200)', border: 'var(--teal-200)'}"></button>
                 <button (click)="onReset()" pButton pRipple type="button" label="Reset"
-                    class="p-button-raised p-button-danger"></button>
+                    class="p-button-raised" [ngStyle]="{backgroundColor:'var(--red-500)', border: 'var(--red-500)'}"></button>
 
             </div>
             <!-- Else show it -->
             <ng-template #enabled>
                 <button (click)="onSubmit()" pButton pRipple type="button" label="Submit"
-                    class="p-button-raised"></button>
+                    class="p-button-raised" [ngStyle]="{backgroundColor:'var(--teal-400)', border: 'var(--teal-400)'}"></button>
                 <button (click)="onReset()" pButton pRipple type="button" label="Reset"
-                    class="p-button-raised p-button-danger"></button>
+                    class="p-button-raised" [ngStyle]="{backgroundColor:'var(--red-500)', border: 'var(--red-500)'}"></button>
             </ng-template>
         </div>
     </form>
