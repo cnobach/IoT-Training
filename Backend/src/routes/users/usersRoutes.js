@@ -11,7 +11,7 @@ const authJwt = require('../authJwt');
 
 router.get('/users', authJwt, getAllUsers);
 router.get('/users/:id', authJwt, getUserByID);
-router.post('/users', authJwt, createUser);
+router.post('/users', createUser);
 router.put('/users', authJwt, updateUser);
 router.delete('/users/:id', authJwt, deleteUser);
 router.post('/login', login)

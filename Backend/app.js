@@ -66,8 +66,4 @@ app.use(transactions);
 // Inventory route
 app.use(inventory);
 
-
-// Listening on the .env defined port, and display 
-app.listen(dotenv.parsed.PORT, () => {
-    console.log(`Listening on port: ${dotenv.parsed.PORT}`)
-})
+module.exports = app;

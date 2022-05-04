@@ -36,8 +36,6 @@ function getUserCart(cb, id) {
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 });
             })
@@ -74,8 +72,6 @@ function getCartByCartId(cartId, cb) {
                     client.end(err => {
                         if (err) {
                             console.log('client hit error in disconnection', err.stack)
-                        } else {
-                            console.log('client disconnected')
                         }
                     });
                 }
@@ -110,8 +106,6 @@ function updateCart(cartId, cart, cb) {
                     client.end(err => {
                         if (err) {
                             console.log('client hit error in disconnection', err.stack)
-                        } else {
-                            console.log('client disconnected')
                         }
                     });
                 }
@@ -205,8 +199,6 @@ function createCart(cb, userId){
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 });
             });
