@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpEvent, HttpResponse, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { map, filter, catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
 import { Router } from '@angular/router';
 
@@ -20,6 +20,9 @@ export class HttpInterceptorService implements HttpInterceptor {
         } 
         else if(error.status === 403){
           this.toastr.error('Your session has expired. Please log in again.', 'Authentication Error');
+        }
+        else if(error.status === 500){
+          this.toastr.error('Internal server error.', 'Error');
         }
         else {
           this.toastr.error(error.message, 'Unexpected Error');

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, PrimeNGConfig, SelectItem } from 'primeng/api';
 import { ServerService } from './services/server.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
@@ -15,12 +15,14 @@ export class CartComponent implements OnInit {
   cart: any = [];
   cartId: any;
   totalCost: any = 0;
+  sortOptions: SelectItem[] = [];
 
   constructor(
     private server: ServerService,
     private confirmServ: ConfirmationService,
-    private toastr: NotificationService
-    ) { }
+    private toastr: NotificationService,
+    private primeNg: PrimeNGConfig,
+  ) { }
 
   ngOnInit(): void {
     // Fetches the cart from the dB based on the userId in localStorage
@@ -38,6 +40,48 @@ export class CartComponent implements OnInit {
         })
       }
     })
+    // Setting up primeNG DataView variables & config
+    this.sortOptions = [
+      { label: 'Price High to Low', value: '!price' },
+      { label: 'Price Low to High', value: 'price' }
+    ];
+    this.primeNg.ripple = true;
+  }
+
+  //  when sort option is changed
+  onSortChange(event: any) {
+    let value = event.value;
+    if (value === '!price') { //If high to low selected
+      this.cart.sort(this.sortItemsDesc);
+    } else if (value === 'price') { //If low to high selected
+      this.cart.sort(this.sortItemsAsc);
+    }
+  }
+
+  // Sort items array by price ascending
+  sortItemsAsc(i: any, j: any) {
+    const a = parseInt(i.price);
+    const b = parseInt(j.price);
+    let comp = 0;
+    if (a > b) {
+      comp = 1;
+    } else if (a < b) {
+      comp = -1;
+    }
+    return comp;
+  }
+
+  // Sort items array by price descending
+  sortItemsDesc(i: any, j: any) {
+    const a = parseInt(i.price);
+    const b = parseInt(j.price);
+    let comp = 0;
+    if (a > b) {
+      comp = -1;
+    } else if (a < b) {
+      comp = 1;
+    }
+    return comp;
   }
 
   removeFromCart(itemId: any, cb: any) {
@@ -81,7 +125,7 @@ export class CartComponent implements OnInit {
 
       accept: () => {
 
-        this.server.checkout(this.cartObject.items, localStorage.getItem('userId'), (data:Boolean)=> {
+        this.server.checkout(this.cartObject.items, localStorage.getItem('userId'), (data: Boolean) => {
           if (data == true) {
 
             this.server.createTransaction(this.cartObject.items, localStorage.getItem('userId')).subscribe(data => {
@@ -89,7 +133,7 @@ export class CartComponent implements OnInit {
               this.toastr.success('Your items have been ordered!', 'Confirmation');
             });
 
-          } else if(data != true){
+          } else if (data != true) {
             this.toastr.error('An Error has occurred. Please try again.', 'Error');
             this.refresh();
           }
@@ -104,7 +148,7 @@ export class CartComponent implements OnInit {
 
   }
 
-  clearCart(){
+  clearCart() {
     this.server.clearCart(this.cartId).subscribe(data => {
 
       this.refresh();

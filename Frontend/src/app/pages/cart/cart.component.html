@@ -1,6 +1,82 @@
 <app-navbar></app-navbar>
 <h1 class="text-center p-4">Cart</h1>
 
+<!-- Set up of dataview -->
+<div *ngIf="cart">
+    <div class="card">
+        
+        <p-dataView #dv  [value]="cart" [paginator]="true" [rows]="5" [columns]="2" filterBy="name" [sortField]="sortField"
+            [sortOrder]="sortOrder" layout="grid">
+
+            <ng-template pTemplate="header">
+                <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+                    <p-dropdown [options]="sortOptions" placeholder="Sort By Price" (onChange)="onSortChange($event)"
+                        styleClass="p-mb-2 p-mb-md-0">
+                    </p-dropdown>
+                    <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                        <i class="pi pi-search"></i>
+                        <input type="search" pInputText placeholder="Search by Name"
+                            (input)="dv.filter($any($event.target).value)">
+                    </span>
+                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+            </ng-template>
+
+            <ng-template let-item pTemplate="listItem">
+                <div class="p-col-12">
+                    <div class="item-list-item">
+                        <!-- Listing item name and description -->
+                        <div class="item-list-detail">
+
+                            <div class="item-name fs-4 fw-bold">
+                                {{item.name}}
+                            </div>
+
+                            <div class="item-description">
+                                {{item.description}}
+                            </div>
+                        </div>
+                        <!-- Listing item price and Inventory -->
+                        <div class="item-list-action">
+                            <span class="item-price">
+                                ${{item.price}}
+                            </span>
+                            <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [key]="item.id"></p-confirmDialog>
+                            <p-button icon="pi pi-shopping-cart" label="Add to Cart" (click)="confirmAdd(item.id)">
+                            </p-button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            
+            <!-- Need to work on looks here - its ugly rn -->
+            <ng-template let-item pTemplate="gridItem">
+                <div class="p-col-12 p-md-4">
+                    <div class="item-grid-item card">
+                        <div class="item-grid-item-top">
+                            <div>
+                                <i class="pi pi-tag item-category-icon"></i>
+                                <span class="item-id p-2">{{item.id}}</span>
+                            </div>
+                        </div>
+                        <div class="item-grid-item-content">
+                            <div class="item-name fs-4 fw-bold">{{item.name}}</div>
+                            <div class="item-description">{{item.description}}</div>
+                        </div>
+                        <div class="item-grid-item-bottom">
+                            <span class="item-price">${{item.price}}</span>
+                            <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [key]="item.id"></p-confirmDialog>
+                            <p-button icon="pi pi-shopping-cart" (click)="confirmAdd(item.id)"></p-button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+
+        </p-dataView>
+    </div>
+</div>
+
+
 <p-table [value]="cart">
 
     <!-- Header of the table -->

@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('userId', query.userId);
           this.router.navigate(['dashboard']);
         } else { // Else alert that it was incorrect
-          alert('Incorrect Username/Password')
+          alert('Incorrect Username/Password') // toatr message
         }
       })
 
