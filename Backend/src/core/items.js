@@ -35,8 +35,6 @@ function getAllItems(cb) {
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 })
             })
@@ -68,14 +66,14 @@ function getItemById(cb, id) {
             client.query(query, (err, res) => {
 
                 if (err) {
-                    throw err;
+                    console.log('Could not find that item');
+                    cb(false);
+                } else {
+                    cb(res.rows);
                 }
-                cb(res.rows);
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 });
             });
@@ -126,8 +124,6 @@ function createItem(cb, data) {
                     client.end(err => {
                         if (err) {
                             console.log('client hit error in disconnection', err.stack)
-                        } else {
-                            console.log('client disconnected')
                         }
                     });
                 })
@@ -167,8 +163,6 @@ function updateItem(cb, data) {
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 });
             });
@@ -189,26 +183,40 @@ function deleteItem(cb, id) {
             console.log('error connecting', err.stack);
         } else {
 
-            const query = {
-                name: 'deleteItem',
-                text: 'DELETE FROM items WHERE id=$1 RETURNING *;',
+            // Have to delete from inventory first
+            const delQuer = {
+                name: 'deleteInventory',
+                text: 'DELETE FROM inventory WHERE id=$1 RETURNING *;',
                 values: [id]
             }
+            client.query(delQuer, (err, res) => {
 
-            client.query(query, (err, res) => {
-
-                if (err) {
-                    throw err;
+                if(err){
+                    console.log('Could not delete from inventory');
+                    cb(false);
+                } else {
+                    const query = {
+                        name: 'deleteItem',
+                        text: 'DELETE FROM items WHERE id=$1 RETURNING *;',
+                        values: [id]
+                    }
+        
+                    client.query(query, (err, res) => {
+        
+                        if (err) {
+                            console.log('Could not delete from items');
+                            cb(false);
+                        } else {
+                            cb(res.rows);
+                        }
+                    });
                 }
-                cb(res.rows);
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 });
-            });
+            })
         }
     });
 }

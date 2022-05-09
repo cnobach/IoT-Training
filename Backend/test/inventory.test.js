@@ -19,6 +19,7 @@ beforeAll((done) => {
         })
 })
 
+// Getting by ID
 describe("GET /inventory/:id", () => {
 
     describe("If the item exists", () => {
@@ -55,6 +56,7 @@ describe("GET /inventory/:id", () => {
     })
 })
 
+// Setting the inventory amount
 describe("PUT /inventory/:id", () => {
 
     describe("If the item exists", () => {

@@ -50,16 +50,11 @@ describe("GET /cart/:id", () => {
 
     describe("Given that the ID doesn't exist", () => {
 
-        test("Should return empty body w/code 200", async() => {
+        test("Should return w/code 500", async() => {
 
             await agent.get("/cart/0")
-                .expect(200)
+                .expect(500)
                 .set('token', cookie)
-                .then((res) => {
-                    //  Check type and length
-                    expect(Array.isArray(res.body)).toBeTruthy();
-                    expect(res.body.length).toEqual(0);
-                })
         })
     })
 
