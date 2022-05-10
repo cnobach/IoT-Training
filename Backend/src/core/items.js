@@ -186,7 +186,7 @@ function deleteItem(cb, id) {
             // Have to delete from inventory first
             const delQuer = {
                 name: 'deleteInventory',
-                text: 'DELETE FROM inventory WHERE id=$1 RETURNING *;',
+                text: 'DELETE FROM inventory WHERE itemid=$1 RETURNING *;',
                 values: [id]
             }
             client.query(delQuer, (err, res) => {
@@ -195,19 +195,22 @@ function deleteItem(cb, id) {
                     console.log('Could not delete from inventory');
                     cb(false);
                 } else {
+
                     const query = {
                         name: 'deleteItem',
                         text: 'DELETE FROM items WHERE id=$1 RETURNING *;',
                         values: [id]
                     }
         
-                    client.query(query, (err, res) => {
-        
+                    client.query(query, (err, resTwo) => {
+                        
                         if (err) {
+                            console.log(err);
+                            console.log(resTwo);
                             console.log('Could not delete from items');
                             cb(false);
                         } else {
-                            cb(res.rows);
+                            cb(resTwo.rows);
                         }
                     });
                 }

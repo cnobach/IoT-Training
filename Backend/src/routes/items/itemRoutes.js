@@ -12,6 +12,6 @@ router.get('/items', authJwt, getAllItems)
 router.get('/items/:id', authJwt, getItemById)
 router.post('/items', createItem)
 router.put('/items', authJwt, updateItem)
-router.delete('/items/:id', authJwt, deleteItem)
+router.delete('/items/:id', deleteItem)
 
 module.exports = router;
