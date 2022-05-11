@@ -35,6 +35,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { ToastrModule } from 'ngx-toastr';
 // CookieService
 import { CookieService } from 'ngx-cookie-service';
+import { CacheInterceptorService } from './services/cache-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { CookieService } from 'ngx-cookie-service';
     ToastrModule.forRoot()
   ],
   providers: [ConfirmationService, CookieService, 
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })
