@@ -125,6 +125,5 @@ describe('DELETE /users/:id', () => {
             .then((res) => {
 
             })
-
     })
 })
