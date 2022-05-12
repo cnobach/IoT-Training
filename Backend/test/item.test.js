@@ -77,7 +77,7 @@ describe('POST /items', () => {
                 let ret = res.body.message;
                 expect(Array.isArray(ret)).toBeTruthy();
                 expect(ret.length).toEqual(1);
-                itemId = ret.id;
+                itemId = ret[0].id;
             })
     })
 })
@@ -85,6 +85,8 @@ describe('POST /items', () => {
 // Updating an item
 describe('PUT /items', () => {
     test('Should update an item & return it', async() => {
+
+        console.log('ItemID in put: ', itemId)
 
         let item = {
             name: 'Test product',
@@ -111,6 +113,7 @@ describe('PUT /items', () => {
 describe('DELETE /items/:id', () => {
     test('Should delete the item given the ID', async() => {
 
+        console.debug('/items/' + itemId);
         await agent.delete('/items/' + itemId)
             .expect(200)
             .set('token', cookie)
