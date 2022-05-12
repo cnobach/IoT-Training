@@ -9,7 +9,7 @@ beforeAll((done) => {
     var path = '';
     agent.post('/login')
         .send({
-            email: 'test@gmail.com',
+            email: 'tester@gmail.com',
             password: 'test'
         })
         .end((err, res) => {

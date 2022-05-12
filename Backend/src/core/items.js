@@ -205,8 +205,6 @@ function deleteItem(cb, id) {
                     client.query(query, (err, resTwo) => {
                         
                         if (err) {
-                            console.log(err);
-                            console.log(resTwo);
                             console.log('Could not delete from items');
                             cb(false);
                         } else {

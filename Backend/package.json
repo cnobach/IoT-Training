@@ -7,7 +7,7 @@
     "verbose": true
   },
   "scripts": {
-    "test": "npx jest trans.test.js --detectOpenHandles --silent=false",
+    "test": "npx jest user.test.js --detectOpenHandles --silent=false",
     "start": "nodemon server.js"
   },
   "repository": {

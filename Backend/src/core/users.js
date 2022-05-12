@@ -40,9 +40,7 @@ function getAllUsers(cb) {
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
-                    }
+                    } 
                 });
 
             })
@@ -81,9 +79,7 @@ function getUserByID(cb, id) {
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
-                    }
+                    } 
                 });
             });
         }
@@ -128,9 +124,7 @@ function createUser(cb, data) {
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
-                    }
+                    } 
                 });
             });
         }
@@ -168,9 +162,7 @@ function updateUser(cb, data) {
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
-                    }
+                    } 
                 });
             });
         }
@@ -190,29 +182,42 @@ function deleteUser(cb, id) {
             console.log('error connecting', err.stack);
         } else {
 
-            const query = {
-                name: 'deleteUser',
-                text: 'DELETE FROM users WHERE id=$1 RETURNING *;',
+            // Have to delete cart first
+            const delCart = {
+                name: 'deleteCart', 
+                text: 'DELETE FROM cart WHERE userid=$1',
                 values: [id]
             }
 
-            client.query(query, (err, res) => {
+            client.query(delCart, (err, res) => {
 
-                if (err) {
-                    console.error('error when deleting user: ', err);
+                if(err){
+                    console.error('Couldnt delete cart: ', err.message);
                     cb(false);
                 } else {
-                    cb(res.rows);
-                }
 
+                    const query = {
+                        name: 'deleteUser',
+                        text: 'DELETE FROM users WHERE id=$1 RETURNING *;',
+                        values: [id]
+                    }
+        
+                    client.query(query, (errTwo, resTwo) => {
+        
+                        if (errTwo) {
+                            console.error('error when deleting user: ', errTwo.message);
+                            cb(false);
+                        } else {
+                            cb(resTwo.rows);
+                        }
+                    });
+                }
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 });
-            });
+            })
         }
     });
 }
@@ -278,8 +283,6 @@ function login(cb, data) {
                     client.end(err => {
                         if (err) {
                             console.log('client hit error in disconnection', err.stack)
-                        } else {
-                            console.log('client disconnected')
                         }
                     });
 
