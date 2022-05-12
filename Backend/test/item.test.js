@@ -3,7 +3,7 @@ const app = require('../app');
 const { CookieAccessInfo } = require('cookiejar');
 const agent = supertest.agent(app);
 
-var access_info, cookie;
+var access_info, cookie, itemId;
 
 beforeAll((done) => {
     var path = '';
@@ -56,8 +56,6 @@ describe('GET /items/:id', () => {
             .set('token', cookie);
     })
 })
-
-var itemId = -1;
 
 // Creating an item
 describe('POST /items', () => {
@@ -113,7 +111,7 @@ describe('PUT /items', () => {
 describe('DELETE /items/:id', () => {
     test('Should delete the item given the ID', async() => {
 
-        await agent.delete('/items/36')
+        await agent.delete('/items/' + itemId)
             .expect(200)
             .set('token', cookie)
             .then((res) => {
