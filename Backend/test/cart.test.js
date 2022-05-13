@@ -28,8 +28,8 @@ describe("GET /cart/:id", () => {
         test("Should return the cart w/code 200", async() => {
 
             const cart = {
-                cartid: 3,
-                userid: 3,
+                cartid: 1,
+                userid: 1,
                 items: {}
             }
 
@@ -71,12 +71,12 @@ describe("PUT /cart/add", ()=> {
             .set('token', cookie)
             .send({
                 itemId: 1,
-                userId: 3 
+                userId: 1 
             })
             .then((res) => {
                 // Check data
-                expect(res.body.cartid).toBe(3);
-                expect(res.body.userid).toBe(3);
+                expect(res.body.cartid).toBe(1);
+                expect(res.body.userid).toBe(1);
                 expect(res.body.items).toEqual(cartArr);
             })
     })
@@ -93,12 +93,12 @@ describe("PUT /cart/remove", () => {
             .set('token', cookie)
             .send({
                 itemId: 1,
-                cartId: 3 
+                cartId: 1 
             })
             .then((res) => {
                 // Check data
-                expect(res.body.cartid).toBe(3);
-                expect(res.body.userid).toBe(3);
+                expect(res.body.cartid).toBe(1);
+                expect(res.body.userid).toBe(1);
                 expect(res.body.items).toEqual(cartArr);
             })
     })
@@ -113,35 +113,35 @@ describe("DELETE /cart/:id", () => {
         .set('token', cookie)
         .send({
             itemId: 1,
-            userId: 3 
+            userId: 1 
         })
         await agent.put('/cart/add')
         .expect(200)
         .set('token', cookie)
         .send({
             itemId: 2,
-            userId: 3 
+            userId: 1 
         })
         await agent.put('/cart/add')
         .expect(200)
         .set('token', cookie)
         .send({
-            itemId: 3,
-            userId: 3 
+            itemId: 1,
+            userId: 1 
         })
 
         const cartArr = [];
 
-        await agent.delete('/cart/3')
+        await agent.delete('/cart/1')
             .expect(200)
             .set('token', cookie)
             .send({
-                cartId: 3 
+                cartId: 1 
             })
             .then((res) => {
                 // Check data
-                expect(res.body.cartid).toBe(3);
-                expect(res.body.userid).toBe(3);
+                expect(res.body.cartid).toBe(1);
+                expect(res.body.userid).toBe(1);
                 expect(res.body.items).toEqual(cartArr);
             })
     })
