@@ -18,10 +18,12 @@ function newTrans(cb, body){
             console.log('connection error', err.stack)
         } else {
 
+            let date = new Date();
+
             const query = {
                 name: 'createTransaction',
                 text: 'INSERT INTO transaction(items, customer, date) VALUES($1, $2, $3) RETURNING *;',
-                values: [body.items, body.id, new Date()]
+                values: [body.items, body.id, date]
             };
 
             client.query(query, (err, res) => {
@@ -29,8 +31,13 @@ function newTrans(cb, body){
                     console.log('Couldnt create transaction:\n', err.stack);
                     cb(false);
                 } else {
-                    cb(true);
+                    cb(res.rows);
                 }
+                client.end(err => {
+                    if (err) {
+                        console.log('client hit error in disconnection', err.stack)
+                    }
+                })
             })
         }
     })

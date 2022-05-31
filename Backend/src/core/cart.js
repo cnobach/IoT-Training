@@ -36,8 +36,6 @@ function getUserCart(cb, id) {
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 });
             })
@@ -53,10 +51,7 @@ function getCartByCartId(cartId, cb) {
     client.connect(err => {
         if (err) {
             console.log('error connecting', err.stack)
-        } else {
-
-            console.log('cart id: ', cartId);
-            
+        } else {            
             const query = {
                 name: 'getCart',
                 text: 'SELECT items FROM cart WHERE cartId = $1',
@@ -67,15 +62,11 @@ function getCartByCartId(cartId, cb) {
                 if (err) {
                     throw err;
                 } else {
-                    
-                    console.log('look here', res.rows);
 
                     cb(res.rows[0]);
                     client.end(err => {
                         if (err) {
                             console.log('client hit error in disconnection', err.stack)
-                        } else {
-                            console.log('client disconnected')
                         }
                     });
                 }
@@ -110,8 +101,6 @@ function updateCart(cartId, cart, cb) {
                     client.end(err => {
                         if (err) {
                             console.log('client hit error in disconnection', err.stack)
-                        } else {
-                            console.log('client disconnected')
                         }
                     });
                 }
@@ -130,9 +119,6 @@ function removeItem(cb, cartId, itemId) {
         // Finds the index of the first instance of the item
         let index = cart.indexOf(itemId);
 
-        console.log('old cart: ', cart);
-        console.log('found index: ', index);
-
         //  If the index was found, removes the item
         if(index > -1){
             cart.splice(index, 1);
@@ -140,7 +126,6 @@ function removeItem(cb, cartId, itemId) {
 
         // Waits for the update cart function to run
         updateCart(cartId, cart, newCart => {
-            console.log('new cart: ', newCart.items);
             // Returns the new cart (and id)
             cb(newCart);
         });
@@ -153,18 +138,15 @@ function addItem(cb, userId, itemId){
 
     getUserCart(cart => {
 
-        console.log('cart inside getUserCart in add', cart[0])
+        
         let cartId = cart[0].cartid;
-        console.log('cartid', cartId)
         cart = cart[0].items;
-        console.log('old cart: ', cart);
 
         // Adds new item to the array
         cart.push(itemId);
     
         // Waits for the update cart function to run
         updateCart(cartId, cart, newCart => {     
-            console.log('new cart: ', newCart);
             // Returns the new cart (and ids)
             cb(newCart);
         });
@@ -176,7 +158,6 @@ function addItem(cb, userId, itemId){
 function clearCart(cb, cartId){
     const empty = [];
     updateCart(cartId, empty, newCart => {
-        console.log('new cart: ', newCart);
         cb(newCart);
     });
 }
@@ -205,8 +186,6 @@ function createCart(cb, userId){
                 client.end(err => {
                     if (err) {
                         console.log('client hit error in disconnection', err.stack)
-                    } else {
-                        console.log('client disconnected')
                     }
                 });
             });

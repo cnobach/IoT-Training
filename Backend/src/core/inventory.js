@@ -32,6 +32,11 @@ function getInventory(cb, id){
                     console.log(res.rows);
                     cb(res.rows);
                 }
+                client.end(err => {
+                    if (err) {
+                        console.log('client hit error in disconnection', err.stack)
+                    }
+                })
             })
         }
     })
@@ -57,6 +62,11 @@ function setInventory(cb, id, amount){
                 } else {
                     cb(true);
                 }
+                client.end(err => {
+                    if (err) {
+                        console.log('client hit error in disconnection', err.stack)
+                    }
+                })
             })
         }
     })

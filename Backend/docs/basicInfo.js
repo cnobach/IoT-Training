@@ -89,7 +89,7 @@ module.exports = {
                     date: {
                         type: "date",
                         description: "Date the item was added",
-                        example: 2022 - 03 - 23
+                        example: '2022 - 03 - 23'
                     },
                     description: {
                         type: "string",
